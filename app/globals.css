@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f5ef;
+  --foreground: #141413;
+  --surface: #fdfbf7;
+  --muted: #6b675d;
+  --line: #d8d1c2;
+  --accent: #1f3a2f;
+  /* Light theme: a soft accent-tinted shaft, darkened into the page. */
+  --beam-color: rgba(31, 58, 47, 0.16);
+  --beam-blend: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --foreground: #f5f2ea;
+    --surface: #171717;
+    --muted: #b8b1a3;
+    --line: #3b3a36;
+    --accent: #8fb39f;
+    --beam-color: rgba(180, 224, 202, 0.5);
+    --beam-blend: screen;
+  }
+}
+
+:root[data-theme="light"] {
+  --background: #f8f5ef;
+  --foreground: #141413;
+  --surface: #fdfbf7;
+  --muted: #6b675d;
+  --line: #d8d1c2;
+  --accent: #1f3a2f;
+  --beam-color: rgba(31, 58, 47, 0.16);
+  --beam-blend: multiply;
+}
+
+:root[data-theme="dark"] {
+  --background: #121212;
+  --foreground: #f5f2ea;
+  --surface: #171717;
+  --muted: #b8b1a3;
+  --line: #3b3a36;
+  --accent: #8fb39f;
+  --beam-color: rgba(180, 224, 202, 0.5);
+  --beam-blend: screen;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-newsreader);
+  --color-ivory: var(--background);
+  --color-ink: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-manrope), sans-serif;
+  text-rendering: optimizeLegibility;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-newsreader), serif;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: #20201d;
+  color: #f8f5ef;
+}
+
+.grid-shell {
+  width: min(1280px, 100% - 3rem);
+  margin-inline: auto;
+}
+
+.section-gap {
+  padding-block: clamp(5rem, 9vw, 9rem);
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.03;
+}
+
+.editorial-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.ambient-panel {
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, #fffcf5 0%, #f6f0e4 100%);
+  border-radius: 2rem;
+}
+
+.hairline {
+  border-top: 1px solid var(--line);
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #1d1d1b;
+  outline-offset: 3px;
+}
+
+/* Cursor-reactive god-rays (see components/motion/beam-field.tsx). */
+.beam-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  --beam-angle: 0deg;
+  --beam-shift: 0vw;
+  --beam-opacity: 0.85;
+  /* Cursor intensity is applied once here so per-ray opacity is free to
+     animate the underwater caustic shimmer. */
+  opacity: var(--beam-opacity);
+}
+
+/* Wide, soft glow at the light source, anchored above the top of the page. */
+.beam-source {
+  position: absolute;
+  top: -40vh;
+  left: calc(50% + var(--beam-shift));
+  width: 110vmax;
+  height: 85vmax;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 55% 50% at 50% 0%,
+    var(--beam-color) 0%,
+    transparent 68%
+  );
+  filter: blur(80px);
+  opacity: 0.45;
+  mix-blend-mode: var(--beam-blend);
+  animation: source-breathe 26s ease-in-out infinite;
+}
+
+/* The whole fan leans toward the cursor; individual rays fan out inside it. */
+.beam-fan {
+  position: absolute;
+  top: -40vh;
+  left: calc(50% + var(--beam-shift));
+  width: 0;
+  height: 0;
+  transform: translateX(-50%) rotate(var(--beam-angle));
+  transform-origin: top center;
+}
+
+.ray {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ray-width, 20vmax);
+  /* Long enough to fall past the fold and light the bottom of the page. */
+  height: 200vh;
+  transform: translateX(-50%) rotate(var(--ray-offset, 0deg));
+  transform-origin: top center;
+  background: linear-gradient(
+    to bottom,
+    var(--beam-color) 0%,
+    transparent 90%
+  );
+  filter: blur(var(--ray-blur, 90px));
+  /* Static fallback (used when reduced-motion disables the animation). */
+  opacity: calc(var(--ray-opacity, 1) * 0.6);
+  mix-blend-mode: var(--beam-blend);
+  will-change: transform, opacity;
+  animation: ray-caustic var(--ray-dur, 20s) ease-in-out var(--ray-delay, 0s)
+    infinite;
+}
+
+/* Underwater caustic loop: brightness breathes while the ray drifts and
+   widens, so the light keeps moving even with the cursor still. Start and end
+   frames match for a seamless loop; per-ray duration/delay keep them desynced. */
+@keyframes ray-caustic {
+  0%,
+  100% {
+    opacity: calc(var(--ray-opacity) * var(--ray-min, 0.15));
+    transform: translateX(-50%) rotate(var(--ray-offset)) scaleX(0.9);
+  }
+  25% {
+    opacity: var(--ray-opacity);
+    transform: translateX(calc(-50% + 1.7vw)) rotate(calc(var(--ray-offset) + 1.7deg))
+      scaleX(1.12);
+  }
+  50% {
+    opacity: calc(var(--ray-opacity) * 0.4);
+    transform: translateX(calc(-50% - 0.6vw)) rotate(calc(var(--ray-offset) - 0.4deg))
+      scaleX(0.98);
+  }
+  75% {
+    opacity: calc(var(--ray-opacity) * 0.85);
+    transform: translateX(calc(-50% - 1.4vw)) rotate(calc(var(--ray-offset) - 1.2deg))
+      scaleX(1.05);
+  }
+}
+
+/* Slow breathing of the source glow. */
+@keyframes source-breathe {
+  0%,
+  100% {
+    opacity: 0.38;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.52;
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ray,
+  .beam-source {
+    animation: none;
+  }
+}

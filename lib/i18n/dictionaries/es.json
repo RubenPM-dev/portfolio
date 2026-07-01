@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "work": "Proyectos",
+    "about": "Sobre mí",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "kicker": "Ingeniero iOS Senior / Swift - SwiftUI",
+    "headline": "Sistemas móviles de nivel producto para momentos en tiempo real a escala global.",
+    "subhead": "Diseño experiencias iOS resilientes donde la corrección del estado en vivo y la sensación de producto conviven. Mi trabajo reciente llega a millones de aficionados al deporte en condiciones de máxima demanda.",
+    "ctaWork": "Ver proyectos seleccionados",
+    "ctaContact": "Iniciar una conversación",
+    "panelLocation": "Madrid / Remoto UE",
+    "panelNote": "Fiabilidad, responsabilidad sobre las versiones y una arquitectura que se mantiene estable bajo presión."
+  },
+  "sections": {
+    "aboutKicker": "Sobre mí",
+    "workKicker": "Proyectos seleccionados",
+    "workHeading": "Páginas de lanzamiento de los proyectos que dieron forma a mi enfoque de ingeniería.",
+    "experienceKicker": "Experiencia",
+    "experienceHeading": "Fichas editoriales, no cronologías.",
+    "skillsKicker": "Habilidades",
+    "photographyKicker": "Fotografía",
+    "photographyHeading": "Momentos de calma lejos de los ciclos de versiones y los paneles de incidencias.",
+    "contactKicker": "Contacto"
+  },
+  "projectCard": {
+    "featuredFallback": "Producto destacado",
+    "role": "Rol",
+    "team": "Equipo",
+    "cta": "Ver el caso del proyecto"
+  },
+  "contactForm": {
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@empresa.com",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntame sobre tu producto, tu equipo y tus objetivos.",
+    "submit": "Enviar mensaje"
+  },
+  "footer": {
+    "role": "Ingeniero iOS Senior"
+  },
+  "project": {
+    "back": "Volver al portfolio",
+    "eyebrow": "Proyecto",
+    "role": "Rol",
+    "company": "Empresa",
+    "teamSize": "Tamaño del equipo",
+    "technologies": "Tecnologías",
+    "challenges": "Retos",
+    "contributions": "Mis contribuciones",
+    "outcome": "Resultado",
+    "outcomeFallback": "Detalles del resultado próximamente.",
+    "gallery": "Galería de imágenes",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "website": "Sitio web oficial",
+    "notFound": "Proyecto no encontrado"
+  },
+  "language": {
+    "label": "Idioma"
+  }
+}

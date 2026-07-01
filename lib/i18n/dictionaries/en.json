@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "work": "Work",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "kicker": "Senior iOS Engineer / Swift - SwiftUI",
+    "headline": "Product-grade mobile systems for realtime moments at global scale.",
+    "subhead": "I craft resilient iOS experiences where live state correctness and product feel coexist. My recent work ships to millions of sports fans under peak-demand conditions.",
+    "ctaWork": "Explore Selected Work",
+    "ctaContact": "Start a Conversation",
+    "panelLocation": "Madrid / Remote EU",
+    "panelNote": "Reliability, release ownership, and architecture that remains graceful under pressure."
+  },
+  "sections": {
+    "aboutKicker": "About",
+    "workKicker": "Selected Work",
+    "workHeading": "Product launch pages for the projects that shaped my engineering approach.",
+    "experienceKicker": "Experience",
+    "experienceHeading": "Editorial cards, not timelines.",
+    "skillsKicker": "Skills",
+    "photographyKicker": "Photography",
+    "photographyHeading": "Quiet moments away from release cycles and incident dashboards.",
+    "contactKicker": "Contact"
+  },
+  "projectCard": {
+    "featuredFallback": "Featured Product",
+    "role": "Role",
+    "team": "Team",
+    "cta": "View Project Story"
+  },
+  "contactForm": {
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "you@company.com",
+    "message": "Message",
+    "messagePlaceholder": "Tell me about your product, team, and goals.",
+    "submit": "Send Message"
+  },
+  "footer": {
+    "role": "Senior iOS Engineer"
+  },
+  "project": {
+    "back": "Back to Portfolio",
+    "eyebrow": "Project",
+    "role": "Role",
+    "company": "Company",
+    "teamSize": "Team Size",
+    "technologies": "Technologies",
+    "challenges": "Challenges",
+    "contributions": "My Contributions",
+    "outcome": "Outcome",
+    "outcomeFallback": "Outcome details coming soon.",
+    "gallery": "Image Gallery",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "website": "Official Website",
+    "notFound": "Project Not Found"
+  },
+  "language": {
+    "label": "Language"
+  }
+}

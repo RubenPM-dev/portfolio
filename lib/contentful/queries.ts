@@ -37,7 +37,7 @@ export async function getProjects(locale?: string): Promise<Project[]> {
     order: "fields.featuredOrder,-sys.createdAt",
     limit: 100,
   });
-  return result?.items || [];
+  return result?.items.sort((a, b) => (a.fields.featuredOrder || 0) - (b.fields.featuredOrder || 0)) || [];
 }
 
 export async function getProjectBySlug(
@@ -93,5 +93,6 @@ export async function getPhotography(locale?: string): Promise<MediaImage[]> {
     locale,
     limit: 100,
   });
+  console.log("getPhotography result:", result, result?.items.map((p) => `${p.fields.title} url: ${p.fields.file.url}`));
   return result?.items || [];
 }

@@ -47,6 +47,19 @@ export interface Project {
         };
       };
     };
+    heroSmall?: {
+      sys: {
+        id: string;
+      };
+      fields: {
+        title: string;
+        file: {
+          url: string;
+        };
+      };
+    };
+    heroAlt?: string;
+    heroCaption?: string;
     gallery?: Array<{
       sys: {
         id: string;
@@ -71,6 +84,7 @@ export interface Project {
       googlePlay?: string;
     };
     featuredOrder?: number;
+    features?: { heading: string; body: string }[];
   };
 }
 

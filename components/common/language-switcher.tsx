@@ -40,7 +40,7 @@ export function LanguageSwitcher({
         aria-label={label}
         value={locale}
         onChange={(event) => switchTo(event.target.value as Locale)}
-        className="focus-ring h-6 cursor-pointer appearance-none rounded-full border border-line bg-transparent pl-3.5 pr-8 text-xs uppercase tracking-[0.1em] text-muted transition-colors hover:text-ink"
+        className="focus-ring h-6 cursor-pointer appearance-none rounded-full border border-line bg-transparent pl-2 pr-2 text-xs uppercase tracking-[0.1em] text-muted transition-colors hover:text-ink"
       >
         {locales.map((option) => (
           <option key={option} value={option}>
@@ -48,20 +48,6 @@ export function LanguageSwitcher({
           </option>
         ))}
       </select>
-      <svg
-        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-muted"
-        width="10"
-        height="10"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M6 9l6 6 6-6" />
-      </svg>
     </div>
   );
 }

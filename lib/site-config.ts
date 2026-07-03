@@ -69,6 +69,10 @@ export const fallbackProjects: Project[] = [
         website: "https://www.ea.com",
       },
       featuredOrder: 1,
+      features: [
+        { heading: "Optimistic Updates", body: "Immediate UI feedback with rollback on failure." },
+        { heading: "Deterministic Reconciliation", body: "Ensures consistent state across clients." }
+      ]
     },
   },
   {

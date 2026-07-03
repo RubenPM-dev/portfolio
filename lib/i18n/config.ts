@@ -13,8 +13,8 @@ export const contentfulLocale: Record<Locale, string> = {
 
 // Human-readable labels for the language switcher.
 export const localeLabels: Record<Locale, string> = {
-  en: "EN",
-  es: "ES",
+  en: "EN 🇬🇧",
+  es: "ES 🇪🇸",
 };
 
 export function isLocale(value: string): value is Locale {

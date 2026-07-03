@@ -16,7 +16,7 @@
   "sections": {
     "aboutKicker": "Sobre mí",
     "workKicker": "Proyectos seleccionados",
-    "workHeading": "Páginas de lanzamiento de los proyectos que dieron forma a mi enfoque de ingeniería.",
+    "workHeading": "Proyectos que han marcado mi trayectoria como ingeniero.",
     "experienceKicker": "Experiencia",
     "experienceHeading": "Fichas editoriales, no cronologías.",
     "skillsKicker": "Habilidades",
@@ -28,7 +28,8 @@
     "featuredFallback": "Producto destacado",
     "role": "Rol",
     "team": "Equipo",
-    "cta": "Ver el caso del proyecto"
+    "cta": "Ver el caso del proyecto",
+    "goToProject": "Ir al proyecto"
   },
   "contactForm": {
     "name": "Nombre",

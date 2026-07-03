@@ -76,22 +76,7 @@ export default async function RootLayout({
       className={`${manrope.variable} ${newsreader.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-background text-foreground">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(() => {
-  try {
-    const key = 'rp-theme';
-    const saved = localStorage.getItem(key);
-    const theme = saved === 'light' || saved === 'dark'
-      ? saved
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-  } catch {}
-})();`,
-          }}
-        />
+      <body className="min-h-full bg-background text-foreground" suppressHydrationWarning>
         <BeamField />
         <div className="relative z-10">{children}</div>
       </body>

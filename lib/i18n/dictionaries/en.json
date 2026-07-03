@@ -16,7 +16,7 @@
   "sections": {
     "aboutKicker": "About",
     "workKicker": "Selected Work",
-    "workHeading": "Product launch pages for the projects that shaped my engineering approach.",
+    "workHeading": "    Projects that shaped my engineering journey.",
     "experienceKicker": "Experience",
     "experienceHeading": "Editorial cards, not timelines.",
     "skillsKicker": "Skills",
@@ -28,7 +28,8 @@
     "featuredFallback": "Featured Product",
     "role": "Role",
     "team": "Team",
-    "cta": "View Project Story"
+    "cta": "View Project Story",
+    "goToProject": "Go to project"
   },
   "contactForm": {
     "name": "Name",

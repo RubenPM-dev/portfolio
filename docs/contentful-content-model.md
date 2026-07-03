@@ -99,6 +99,7 @@ Collection. Case studies; also drives the `/work/[slug]` detail pages. Queried v
 | `outcome` | Text | ✅ | Result statement |
 | `links` | JSON Object | — | `{ website?, appStore?, googlePlay? }` |
 | `featuredOrder` | Integer | — | Sort key (lower = first) |
+| `features` | JSON Object | - | `{ heading: String, body: String}` |
 
 ```json
 {

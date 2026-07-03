@@ -6,53 +6,54 @@ type Theme = "light" | "dark";
 
 const storageKey = "rp-theme";
 
-function getPreferredTheme(): Theme {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
-  const savedTheme = window.localStorage.getItem(storageKey);
-  if (savedTheme === "light" || savedTheme === "dark") {
-    return savedTheme;
-  }
-
+function getSystemTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 }
 
-function applyTheme(theme: Theme) {
-  document.documentElement.dataset.theme = theme;
-  document.documentElement.style.colorScheme = theme;
-}
-
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+  // Effective theme, used only for the icon/label. `null` until mounted so SSR
+  // and the first client render agree (both show the moon).
+  const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    const initialTheme = getPreferredTheme();
-    setTheme(initialTheme);
-    applyTheme(initialTheme);
-    setMounted(true);
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+    // A saved value means the user explicitly picked a theme -> honour it.
+    // Otherwise follow the system: leave `data-theme` off so the CSS
+    // `prefers-color-scheme` rules drive the colours (and keep following live
+    // system changes).
+    const sync = () => {
+      const saved = window.localStorage.getItem(storageKey);
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.dataset.theme = saved;
+        document.documentElement.style.colorScheme = saved;
+        setTheme(saved);
+      } else {
+        delete document.documentElement.dataset.theme;
+        document.documentElement.style.removeProperty("color-scheme");
+        setTheme(media.matches ? "dark" : "light");
+      }
+    };
+
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
   }, []);
 
-  useEffect(() => {
-    if (!mounted) {
-      return;
-    }
-
-    applyTheme(theme);
-    window.localStorage.setItem(storageKey, theme);
-  }, [theme, mounted]);
-
   const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === "light" ? "dark" : "light"));
+    const next: Theme = (theme ?? getSystemTheme()) === "light" ? "dark" : "light";
+    // Only persist on an explicit user choice.
+    window.localStorage.setItem(storageKey, next);
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    setTheme(next);
   };
 
   // Show the icon for the theme you'd switch TO. Default to the moon before
   // mount so SSR and first client paint agree.
-  const showSun = mounted && theme === "dark";
+  const showSun = theme === "dark";
 
   return (
     <button

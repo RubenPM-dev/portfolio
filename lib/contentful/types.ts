@@ -22,6 +22,25 @@ export interface ContentfulImage {
 }
 
 // Content types
+export interface Kicker {
+  sys: {
+    id: string;
+    type: "Entry";
+    contentType: {
+      sys: {
+        id: "hero";
+      };
+    };
+  };
+  fields: {
+    kicker: string;
+    headline: string;
+    subhead: string;
+    ctaWork: string;
+    ctaContact: string;
+  };
+}
+
 export interface Project {
   sys: {
     id: string;

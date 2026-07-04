@@ -16,7 +16,16 @@ if (hasCFConfig) {
 
 interface ContentfulErrorInfo {
   status?: number;
-  details?: { errors?: Array<{ name?: string; path?: string[] }> };
+  details?: { errors?: Array<{ name?: string; value?: string; path?: string[] }> };
+}
+
+// A query for a content type that isn't in the space yet (e.g. a singleton
+// authored later). Expected during setup — degrade to the fallback quietly
+// rather than logging a scary error.
+function isUnknownContentType(info: ContentfulErrorInfo): boolean {
+  return Boolean(
+    info.details?.errors?.some((entry) => entry.name === "unknownContentType"),
+  );
 }
 
 // contentful.js (v11) throws an Error whose `message` is a JSON string holding
@@ -74,6 +83,13 @@ export async function contentfulFetch<T>(
       }
     }
 
+    if (isUnknownContentType(errorInfo)) {
+      console.warn(
+        `Contentful: content type "${query.content_type}" not found yet — using fallback.`,
+      );
+      return null;
+    }
+
     console.error("Contentful fetch error:", error);
     return null;
   }
@@ -91,6 +107,12 @@ export async function contentfulFetchOne<T>(
     const response = await (client as any).getEntries(query);
     return (response.items[0] as T) || null;
   } catch (error) {
+    if (isUnknownContentType(parseContentfulError(error))) {
+      console.warn(
+        `Contentful: content type "${query.content_type}" not found yet — using fallback.`,
+      );
+      return null;
+    }
     console.error("Contentful fetch error:", error);
     return null;
   }

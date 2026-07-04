@@ -255,6 +255,32 @@ Collection. Categorized images (photography grid etc.). Queried via `getPhotogra
 
 ---
 
+## 8. `Kicker`
+
+Singleton. Landing/intro copy — kicker, headline, subhead, and the two CTA button labels. Queried via `getHero()` (`limit: 1`).
+
+> **Fallback is the i18n dictionary, not `site-config.ts`.** When the `hero` entry is missing (or Contentful is unconfigured), each field falls back to `lib/i18n/dictionaries/{en,es}.json → hero`, so the section stays localized. Mark the fields **localizable** in Contentful and fill both `en-GB` and `es` values on the single entry (Contentful localizes at the field level — one entry, per-locale values — not one entry per language).
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `kicker` | Symbol | ✅ | Small eyebrow label above the headline |
+| `headline` | Text | ✅ | Main hero headline |
+| `subhead` | Text | ✅ | Supporting paragraph |
+| `ctaWork` | Symbol | ✅ | Primary button label (anchors to `#work`) |
+| `ctaContact` | Symbol | ✅ | Secondary button label (anchors to `#contact`) |
+
+```json
+{
+  "kicker": "Senior iOS Engineer / Swift - SwiftUI",
+  "headline": "Product-grade mobile systems for realtime moments at global scale.",
+  "subhead": "I craft resilient iOS experiences where live state correctness and product feel coexist. My recent work ships to millions of sports fans under peak-demand conditions.",
+  "ctaWork": "Explore Selected Work",
+  "ctaContact": "Start a Conversation"
+}
+```
+
+---
+
 ## Asset (image) reference
 
 Any `Media → Asset` field (e.g. `heroImage`, `portrait`, `image`, items in `gallery`) resolves to this shape. Contentful returns protocol-relative URLs (`//images.ctfassets.net/...`); [`lib/contentful/image.ts`](../lib/contentful/image.ts) prepends `https:` for you.
@@ -277,7 +303,7 @@ Any `Media → Asset` field (e.g. `heroImage`, `portrait`, `image`, items in `ga
 
 ## Notes for authoring in Contentful
 
-- **Content type IDs must match exactly** the strings the queries filter on: `settings`, `about`, `project`, `experience`, `skills`, `contact`, `mediaImage`. They're case-sensitive.
-- **Singletons** (`settings`, `about`, `skills`, `contact`) — the app takes the first entry (`limit: 1`). Keep one published entry each.
+- **Content type IDs must match exactly** the strings the queries filter on: `settings`, `hero`, `about`, `project`, `experience`, `skills`, `contact`, `mediaImage`. They're case-sensitive.
+- **Singletons** (`settings`, `hero`, `about`, `skills`, `contact`) — the app takes the first entry (`limit: 1`). Keep one published entry each.
 - **Ordering** — `project` sorts by `featuredOrder`, `experience` by `orderRank`. The client gracefully retries without ordering if the field is missing (see [`lib/contentful/client.ts`](../lib/contentful/client.ts)), but set them to control sequence.
 - **No config = fallbacks.** Without `NEXT_PUBLIC_CONTENTFUL_SPACE_ID` / `NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN`, queries return `null` and the site renders the examples from [`lib/site-config.ts`](../lib/site-config.ts). Use those as your source-of-truth seed content.

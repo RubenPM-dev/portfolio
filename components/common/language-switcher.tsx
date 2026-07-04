@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 
-import { localeLabels, locales, type Locale } from "@/lib/i18n/config";
+import { locales, localeLabels, type Locale } from "@/lib/i18n/config";
+import { cn } from "@/lib/utils";
 
 // Persist the choice so the proxy keeps honouring it on later visits.
 function persistLocale(locale: Locale) {
@@ -35,19 +36,38 @@ export function LanguageSwitcher({
   }
 
   return (
-    <div className="relative inline-flex items-center">
-      <select
-        aria-label={label}
-        value={locale}
-        onChange={(event) => switchTo(event.target.value as Locale)}
-        className="focus-ring h-6 cursor-pointer appearance-none rounded-full border border-line bg-transparent pl-2 pr-2 text-xs uppercase tracking-[0.1em] text-muted transition-colors hover:text-ink"
-      >
-        {locales.map((option) => (
-          <option key={option} value={option}>
-            {localeLabels[option]}
-          </option>
-        ))}
-      </select>
+    <div
+      role="group"
+      aria-label={label}
+      className="relative inline-flex items-center rounded-full border border-line p-0.5 text-xs font-medium uppercase tracking-[0.1em]"
+    >
+      {/* Sliding highlight behind the active language. Translates by its own
+          width per locale index, so it works for any number of locales. */}
+      <span
+        aria-hidden="true"
+        style={{ transform: `translateX(${locales.indexOf(locale) * 100}%)` }}
+        className="pointer-events-none absolute inset-y-0.5 left-0.5 w-12 rounded-full bg-ink transition-transform duration-300 ease-out"
+      />
+      {locales.map((option) => {
+        // Labels are "CODE FLAG" (e.g. "EN 🇬🇧") — split so the code can be
+        // sized down without shrinking the flag.
+        const [code, flag] = localeLabels[option].split(" ");
+        return (
+          <button
+            key={option}
+            type="button"
+            onClick={() => switchTo(option)}
+            aria-pressed={option === locale}
+            className={cn(
+              "focus-ring relative z-10 w-12 rounded-full py-0.4 text-center whitespace-nowrap transition-colors",
+              option === locale ? "text-background" : "text-muted hover:text-ink",
+            )}
+          >
+            <span className="text-[0.6rem]">{code}</span>
+            <span className="ml-1">{flag}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }

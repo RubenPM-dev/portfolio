@@ -14,21 +14,27 @@ export default async function ContactForm({ lang }: { lang: Locale }) {
 
   return (
     <section id="contact" className="section-gap hairline">
-      <div className="grid-shell editorial-grid">
-        <Reveal className="col-span-12 lg:col-span-6">
+        <Reveal className="flex flex-col w-full justify-center items-center">
           <p className="kicker">{dict.sections.contactKicker}</p>
           <h2 className="section-heading mt-4 max-w-xl">
             {mergedContact.heading}
           </h2>
-          <p className="mt-6 max-w-md text-base leading-8 text-muted">
+          <p className="mt-6 max-w-md text-base text-center leading-8 text-muted">
             {mergedContact.description}
           </p>
-          <div className="mt-8 space-y-2 text-sm text-muted">
-            <p>{mergedContact.email}</p>
-            <p>{mergedContact.location}</p>
+          <div className="mt-8 space-y-2 text-sm text-center text-muted">
+            <p>
+              <a
+                href={`mailto:${mergedContact.email}`}
+                className="focus-ring rounded-sm font-bold text-ink underline decoration-line underline-offset-4 transition-colors"
+              >
+                {mergedContact.email}
+              </a>
+            </p>
+            <p className="pt-8">{mergedContact.location}</p>
           </div>
         </Reveal>
-        <Reveal delay={0.1} className="col-span-12 lg:col-span-6">
+        {/* <Reveal delay={0.1} className="col-span-12 lg:col-span-6">
           <form
             action={`mailto:${mergedContact.email}`}
             method="post"
@@ -76,8 +82,7 @@ export default async function ContactForm({ lang }: { lang: Locale }) {
               {dict.contactForm.submit}
             </Button>
           </form>
-        </Reveal>
-      </div>
+        </Reveal> */}
     </section>
   );
 }

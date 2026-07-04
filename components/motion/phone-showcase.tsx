@@ -11,6 +11,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import ScrollIndicator from "@/components/common/scrollIndicator";
 import { StoreBadges } from "@/components/common/store-badges";
 import { Project } from "@/lib/contentful/types";
 
@@ -144,9 +145,6 @@ export function PhoneShowcase({
     offset: ["start start", "end end"],
   });
 
-  // The phone image is a discrete state that flips when scroll crosses each
-  // band threshold, then plays its own quick transition — rather than being
-  // continuously blended across the scroll.
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
   const activeRef = useRef(0);
@@ -157,8 +155,6 @@ export function PhoneShowcase({
     }
     const pos = progress * bandUnits(count);
     const current = activeRef.current;
-    // Hysteresis: only switch once scroll is clearly past the band boundary, so
-    // jitter at a boundary can't toggle `active` and interrupt the slide.
     const margin = 0.12;
     let next = current;
     if (pos > current + 1 + margin) {
@@ -172,6 +168,22 @@ export function PhoneShowcase({
       setActive(next);
     }
   });
+
+  // Scroll cue: fully visible at the very top, then handed off to the first
+  // caption. Caption 0's band starts at progress 0 and reaches full opacity at
+  // FADE_FRACTION / units, so clear the cue within the first half of that window
+  // — it's completely gone as the caption starts fading in. (Screen-count
+  // independent; `Math.max` guards the empty/single-screen case before returns.)
+  const captionFadeIn = FADE_FRACTION / Math.max(1, bandUnits(screens.length));
+  // Three-point range that explicitly pins opacity at 0 from the hand-off all
+  // the way to the end (progress 1). A plain two-point range relies on clamp/
+  // extrapolation, so any slight backward jitter in scrollYProgress can nudge
+  // the cue back into view after the caption appears — this can't.
+  const scrollHintOpacity = useTransform(
+    scrollYProgress,
+    [0, captionFadeIn * 0.5, 1],
+    [1, 0, 0],
+  );
 
   if (!screens.length) {
     return null;
@@ -252,10 +264,11 @@ export function PhoneShowcase({
         {header ? (
           <div className="grid-shell shrink-0 pt-2 lg:pt-10">{header}</div>
         ) : null}
+
         <div className="grid-shell grid min-h-0 flex-1 grid-cols-[auto_minmax(0,1fr)] items-center gap-5 lg:grid-cols-[1fr_auto_1fr] lg:gap-10">
-          {/* Desktop-only left column: even-indexed captions. */}
+          {/* Desktop-only left column: even-indexed captions + the pre-scroll cue. */}
           <div className="relative hidden lg:block">
-            {screens.map((_, index) => 
+            {screens.map((_, index) =>
               index % 2 === 0 ? (
                 <Caption
                   key={index}
@@ -302,7 +315,6 @@ export function PhoneShowcase({
                 />
               </div>
             ) : null}
-          
           </div>
 
           {/* Right column. Mobile: ALL captions on this single side next to the

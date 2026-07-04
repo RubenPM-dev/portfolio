@@ -2,6 +2,7 @@
   "nav": {
     "work": "Proyectos",
     "about": "Sobre mí",
+    "skills": "Habilidades",
     "contact": "Contacto"
   },
   "hero": {
@@ -22,7 +23,7 @@
     "skillsKicker": "Habilidades",
     "photographyKicker": "Fotografía",
     "photographyHeading": "Momentos de calma lejos de los ciclos de versiones y los paneles de incidencias.",
-    "contactKicker": "Contacto"
+    "contactKicker": "Contáctame"
   },
   "projectCard": {
     "featuredFallback": "Producto destacado",
@@ -39,9 +40,6 @@
     "message": "Mensaje",
     "messagePlaceholder": "Cuéntame sobre tu producto, tu equipo y tus objetivos.",
     "submit": "Enviar mensaje"
-  },
-  "footer": {
-    "role": "Ingeniero iOS Senior"
   },
   "project": {
     "back": "Volver al portfolio",

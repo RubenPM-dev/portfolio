@@ -15,7 +15,7 @@ export default async function SkillsSection({ lang }: { lang: Locale }) {
   const mergedSkills = skills?.fields || fallbackSkills.fields;
 
   return (
-    <section className="section-gap hairline">
+    <section id="skills" className="section-gap hairline">
       <div className="grid-shell">
         <Reveal>
           <p className="kicker">{dict.sections.skillsKicker}</p>

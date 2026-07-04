@@ -3,6 +3,7 @@ import {
   contentfulFetchOne,
 } from "./client";
 import {
+  type Kicker,
   type Project,
   type Experience,
   type Skills,
@@ -17,6 +18,14 @@ import {
 export async function getSettings(locale?: string): Promise<Settings | null> {
   return contentfulFetchOne<Settings>({
     content_type: "settings",
+    locale,
+    limit: 1,
+  });
+}
+
+export async function getKicker(locale?: string): Promise<Kicker | null> {
+  return contentfulFetchOne<Kicker>({
+    content_type: "kicker",
     locale,
     limit: 1,
   });
@@ -93,6 +102,6 @@ export async function getPhotography(locale?: string): Promise<MediaImage[]> {
     locale,
     limit: 100,
   });
-  console.log("getPhotography result:", result, result?.items.map((p) => `${p.fields.title} url: ${p.fields.file.url}`));
+  console.log("getPhotography result:", result, result?.items.map((p) => `${p.fields.title} url: ${p.fields.image.fields.file.url}`));
   return result?.items || [];
 }

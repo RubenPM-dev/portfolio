@@ -140,7 +140,7 @@ h4 {
 }
 
 .section-heading {
-  font-size: clamp(2rem, 4vw, 4rem);
+  font-size: clamp(0.5rem, 2vw, 2rem);
   line-height: 1.03;
 }
 
@@ -167,6 +167,24 @@ h4 {
 
 .hairline {
   border-top: 1px solid var(--line);
+}
+
+/* Grayscale Lottie recolour: invert (black<->white) in the dark theme. Keyed
+   off the same [data-theme] / prefers-color-scheme signals as the rest of the
+   theme, because Tailwind's dark: variant only tracks the system setting, not
+   the manual toggle. Opt in with the Lottie `invertOnDark` prop. */
+.lottie-invert-dark {
+  transition: filter 180ms ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .lottie-invert-dark {
+    filter: invert(1);
+  }
+}
+
+:root[data-theme="dark"] .lottie-invert-dark {
+  filter: invert(1);
 }
 
 .carousel-track {

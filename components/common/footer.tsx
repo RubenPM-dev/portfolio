@@ -1,18 +1,16 @@
 import { getSettings } from "@/lib/contentful/queries";
 import { contentfulLocale, type Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { fallbackSettings } from "@/lib/site-config";
 
-export default async function Footer({ lang }: { lang: Locale }) {
-  const dict = getDictionary(lang);
+export default async function Footer({ id, lang }: { id?: string; lang: Locale }) {
   const settings = await getSettings(contentfulLocale[lang]);
   const settingsFields = settings?.fields || fallbackSettings.fields;
 
   return (
-    <footer className="hairline mt-8">
+    <footer id={id} className="hairline mt-8">
       <div className="footer">
         <p>
-          {settingsFields.siteTitle} / {dict.footer.role}
+          {settingsFields.siteTitle}
         </p>
         <div className="flex gap-5">
           {(settingsFields.socialLinks || []).map((link: any) => (

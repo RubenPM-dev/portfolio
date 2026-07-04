@@ -2,6 +2,7 @@
   "nav": {
     "work": "Work",
     "about": "About",
+    "skills": "Skills",
     "contact": "Contact"
   },
   "hero": {
@@ -22,7 +23,7 @@
     "skillsKicker": "Skills",
     "photographyKicker": "Photography",
     "photographyHeading": "Quiet moments away from release cycles and incident dashboards.",
-    "contactKicker": "Contact"
+    "contactKicker": "Contact me"
   },
   "projectCard": {
     "featuredFallback": "Featured Product",
@@ -39,9 +40,6 @@
     "message": "Message",
     "messagePlaceholder": "Tell me about your product, team, and goals.",
     "submit": "Send Message"
-  },
-  "footer": {
-    "role": "Senior iOS Engineer"
   },
   "project": {
     "back": "Back to Portfolio",

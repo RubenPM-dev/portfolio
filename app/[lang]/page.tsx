@@ -54,12 +54,13 @@ export default async function Home({ params }: Props) {
         }
       >
         <a href="#work" className="focus-ring text-xs font-bold">{dict.nav.work}</a>
-        <a href="#about" className="focus-ring text-xs font-bold">{dict.nav.about}</a>
+        {/* <a href="#about" className="focus-ring text-xs font-bold">{dict.nav.about}</a> */}
+        <a href="#skills" className="focus-ring text-xs font-bold">{dict.nav.skills}</a>
         <a href="#contact" className="focus-ring text-xs font-bold">{dict.nav.contact}</a>
       </SiteHeader>
 
       <IntroSection lang={lang} />
-      <AboutSection lang={lang} />
+      {/* <AboutSection lang={lang} /> */}
       <ProjectsSection lang={lang} />
       <ExperienceSection lang={lang} />
       <SkillsSection lang={lang} />

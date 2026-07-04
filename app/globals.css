@@ -7,13 +7,9 @@
   --muted: #6b675d;
   --line: #d8d1c2;
   --accent: #1f3a2f;
-  /* Light theme: a soft accent-tinted shaft, darkened into the page.
-     Two tones — a surface green and a deeper teal — cross-fade in the rays. */
   --beam-color: rgba(31, 58, 47, 0.16);
   --beam-color-2: rgba(17, 74, 90, 0.14);
   --beam-blend: multiply;
-  /* Shared corner radius for surface containers (cards, header, panels) so
-     every rounded component stays visually consistent. */
   --radius: 1.15rem;
 }
 
@@ -155,9 +151,18 @@ h4 {
 }
 
 .ambient-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
   border: 1px solid var(--line);
-  background: linear-gradient(160deg, #fffcf5 0%, #f6f0e4 100%);
   border-radius: var(--radius);
+  /* --surface is almost identical to --background, so the panel would vanish.
+     Mixing in a little --foreground darkens it in light mode / lightens it in
+     dark mode → visible against the page, and theme-aware since both vars flip.
+     Higher surface % = subtler; add `transparent` to a stop for see-through. */
+  background: linear-gradient(160deg,
+      color-mix(in srgb, var(--surface) 94%, var(--foreground)) 0%,
+      color-mix(in srgb, var(--surface) 85%, var(--foreground)) 100%);
 }
 
 .hairline {
@@ -196,22 +201,6 @@ h4 {
   box-shadow: 0 26px 52px -20px var(--card-shadow-hover);
 }
 
-@media (max-width: 639px) {
-  .carousel-track {
-    gap: 1rem;
-  }
-
-  .carousel-item-fill {
-    min-height: calc(40svh - var(--site-header-height, 5rem));
-    padding-block: 8px;
-  }
-
-  /* Horizontal: one flick advances exactly one card, never skipping past. */
-  .carousel-item {
-    scroll-snap-stop: always;
-  }
-}
-
 .focus-ring:focus-visible {
   outline: 2px solid #1d1d1b;
   outline-offset: 3px;
@@ -220,16 +209,11 @@ h4 {
 /* Floating glass bar inside the site header (see components/site-header.tsx). */
 .header {
   position: sticky;
+  margin: 0 auto;
   top: 0;
   z-index: 40;
   padding-top: 1rem;
   padding-inline: 1rem;
-}
-
-@media (max-width: 639px) {
-  .header {
-    padding-top: 4;
-  }
 }
 
 .site-header-root {
@@ -251,14 +235,55 @@ h4 {
   -webkit-backdrop-filter: blur(40px) saturate(1.5);
 }
 
-@media (max-width: 640px) {
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-block: 2rem;
+}
+
+/* All viewport-width (mobile) overrides, gathered in one block placed after the
+   base rules they override so the cascade resolves correctly (a @media rule adds
+   no specificity, so it must come later in source order to win). */
+@media (max-width: 639px) {
+  .carousel-track {
+    gap: 1rem;
+  }
+
+  .carousel-item-fill {
+    min-height: calc(40svh - var(--site-header-height, 5rem));
+    padding-block: 8px;
+  }
+
+  /* One flick advances exactly one card, never skipping past. */
+  .carousel-item {
+    scroll-snap-stop: always;
+  }
+
+  .header {
+    padding-top: 4px;
+  }
+
   .site-header-root {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 1rem;
   }
+
+  .footer {
+    flex-direction: column;
+  }
 }
+
+
+
 
 /* Cursor-reactive god-rays (see components/motion/beam-field.tsx). */
 .beam-field {
@@ -341,15 +366,13 @@ h4 {
   opacity: 0.7;
   /* Same period as the brightness caustic (seamless loop) but a shifted phase,
      so colour and brightness don't pulse in lockstep. */
-  animation: ray-tone-surface var(--ray-dur, 20s) ease-in-out
-    calc(var(--ray-delay, 0s) - 4s) infinite;
+  animation: ray-tone-surface var(--ray-dur, 20s) ease-in-out calc(var(--ray-delay, 0s) - 4s) infinite;
 }
 
 .ray::after {
   background: linear-gradient(to bottom, var(--beam-color-2) 0%, transparent 92%);
   opacity: 0.5;
-  animation: ray-tone-deep var(--ray-dur, 20s) ease-in-out
-    calc(var(--ray-delay, 0s) - 4s) infinite;
+  animation: ray-tone-deep var(--ray-dur, 20s) ease-in-out calc(var(--ray-delay, 0s) - 4s) infinite;
 }
 
 /* Underwater caustic loop: brightness breathes while the ray drifts and
@@ -382,13 +405,27 @@ h4 {
 /* Counter-phase tone cross-fade (see .ray::before / .ray::after). Offset from
    the brightness caustic so hue and brightness don't pulse in lockstep. */
 @keyframes ray-tone-surface {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
 }
 
 @keyframes ray-tone-deep {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Slow breathing of the source glow. */

@@ -103,7 +103,7 @@ export default async function ProjectPage({ params }: Props) {
   }
 
   return (
-    <main className="pb-16">
+    <>
       <SiteHeader
         locale={lang}
         languageLabel={dict.language.label}
@@ -122,6 +122,6 @@ export default async function ProjectPage({ params }: Props) {
       <HeroImageSection project={project} />
 
       <Footer lang={lang} />
-    </main>
+    </>
   );
 }

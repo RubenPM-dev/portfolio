@@ -10,7 +10,7 @@ export default async function Footer({ lang }: { lang: Locale }) {
 
   return (
     <footer className="hairline mt-8">
-      <div className="grid-shell flex flex-col justify-between gap-4 py-8 text-sm text-muted sm:flex-row sm:items-center">
+      <div className="footer">
         <p>
           {settingsFields.siteTitle} / {dict.footer.role}
         </p>

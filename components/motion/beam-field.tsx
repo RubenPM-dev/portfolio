@@ -4,17 +4,27 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
+// How quickly the fan catches up to the cursor each frame (0..1). Lower is more
+// damped — a softer, floatier trail. ~0.07 tracked fairly tightly; 0.035 eases
+// out roughly twice as slowly.
+const FOLLOW_EASE = 0.015;
+
 // A fan of god-rays that tilt toward the cursor — like sunlight filtering down
 // through water. Cursor motion is driven by a requestAnimationFrame lerp writing
 // CSS custom properties, so it stays smooth and never re-renders React.
 // `min` is how far a ray's brightness dips each cycle. Rays with min: 0 fade
-// out completely, so the number of visible rays drifts between ~2 and 5.
+// out completely, so the number of visible rays drifts (here between ~5 and 9).
+// Tighter `blur` keeps the ray edges crisp; higher `opacity` makes them read.
 const RAYS = [
-  { offset: -16, width: "7vmax", blur: "42px", opacity: 0.5, min: 0, dur: "21s", delay: "0s" },
-  { offset: -8, width: "13vmax", blur: "60px", opacity: 0.85, min: 0.2, dur: "17s", delay: "-5s" },
-  { offset: -1, width: "9vmax", blur: "48px", opacity: 0.7, min: 0.05, dur: "25s", delay: "-13s" },
-  { offset: 7, width: "15vmax", blur: "64px", opacity: 0.8, min: 0.22, dur: "19s", delay: "-8s" },
-  { offset: 15, width: "6vmax", blur: "38px", opacity: 0.45, min: 0, dur: "23s", delay: "-3s" },
+  { offset: -20, width: "5vmax", blur: "24px", opacity: 0.6, min: 0, dur: "22s", delay: "-2s" },
+  { offset: -15, width: "8vmax", blur: "32px", opacity: 0.9, min: 0.18, dur: "18s", delay: "-9s" },
+  { offset: -10, width: "5vmax", blur: "22px", opacity: 0.7, min: 0, dur: "25s", delay: "-14s" },
+  { offset: -6, width: "12vmax", blur: "40px", opacity: 1, min: 0.28, dur: "16s", delay: "-5s" },
+  { offset: -1, width: "7vmax", blur: "26px", opacity: 0.85, min: 0.06, dur: "24s", delay: "-12s" },
+  { offset: 4, width: "6vmax", blur: "24px", opacity: 0.8, min: 0, dur: "20s", delay: "-7s" },
+  { offset: 9, width: "13vmax", blur: "40px", opacity: 0.95, min: 0.24, dur: "17s", delay: "-3s" },
+  { offset: 14, width: "6vmax", blur: "26px", opacity: 0.7, min: 0, dur: "23s", delay: "-10s" },
+  { offset: 19, width: "9vmax", blur: "32px", opacity: 0.8, min: 0.12, dur: "21s", delay: "-6s" },
 ];
 
 export function BeamField() {
@@ -45,8 +55,8 @@ export function BeamField() {
 
     const tick = () => {
       // Ease the current values toward the target for a soft trailing feel.
-      currentX += (targetX - currentX) * 0.07;
-      currentY += (targetY - currentY) * 0.07;
+      currentX += (targetX - currentX) * FOLLOW_EASE;
+      currentY += (targetY - currentY) * FOLLOW_EASE;
 
       // Tilt the fan so it leans toward the cursor (top-anchored, so the sign
       // is inverted relative to the rotation direction).

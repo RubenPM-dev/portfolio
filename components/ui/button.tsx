@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { track } from "@vercel/analytics";
 
 import { cn } from "@/lib/utils";
 
@@ -32,16 +35,32 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  // Stable, English-only analytics id — kept independent of the (localized)
+  // button label so events group consistently in Analytics across languages.
+  // When set, a click fires a `button_click` event `{ id, ...trackProps }`.
+  trackId?: string;
+  trackProps?: Record<string, string | number | boolean>;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    { className, variant, size, asChild = false, trackId, trackProps, onClick, ...props },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : "button";
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (trackId) {
+        track("button_click", { id: trackId, ...trackProps });
+      }
+      onClick?.(event);
+    };
 
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        onClick={handleClick}
         {...props}
       />
     );

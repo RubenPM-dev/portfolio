@@ -8,12 +8,12 @@ import { getSettings } from "@/lib/contentful/queries";
 import { contentfulLocale, defaultLocale, isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import IntroSection from "@/components/homePage/introSection";
-import AboutSection from "@/components/homePage/aboutSection";
 import ProjectsSection from "@/components/homePage/projectsSection";
 import ExperienceSection from "@/components/homePage/experienceSection";
 import SkillsSection from "@/components/homePage/skillsSection";
 import ContactForm from "@/components/common/contactForm";
 import Footer from "@/components/common/footer";
+import { SectionTracker } from "@/components/analytics/section-tracker";
 
 export const revalidate = 120;
 
@@ -59,13 +59,16 @@ export default async function Home({ params }: Props) {
         <a href="#contact" className="focus-ring text-xs font-bold">{dict.nav.contact}</a>
       </SiteHeader>
 
-      <IntroSection lang={lang} />
-      {/* <AboutSection lang={lang} /> */}
-      <ProjectsSection lang={lang} />
-      <ExperienceSection lang={lang} />
-      <SkillsSection lang={lang} />
-      <ContactForm lang={lang} />
+      <div className="text-center">
+        <IntroSection lang={lang} />
+        {/* <AboutSection lang={lang} /> */}
+        <ProjectsSection lang={lang} />
+        <ExperienceSection lang={lang} />
+        <SkillsSection lang={lang} />
+        <ContactForm lang={lang} />
+      </div>
       <Footer lang={lang} />
+      <SectionTracker />
     </main>
   );
 }

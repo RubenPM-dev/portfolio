@@ -11,13 +11,13 @@ export default async function ExperienceSection({ lang }: { lang: Locale }) {
   const mergedExperiences = experiences.length ? experiences : fallbackExperiences;
 
   return (
-    <section className="section-gap hairline">
+    <section id="experience" className="section-gap hairline">
       <div className="grid-shell">
         <Reveal>
           <p className="kicker">{dict.sections.experienceKicker}</p>
-          <h2 className="section-heading mt-4 max-w-3xl">{dict.sections.experienceHeading}</h2>
+          <h2 className="section-heading mt-4 max-w-3xl mx-auto">{dict.sections.experienceHeading}</h2>
         </Reveal>
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 text-left">
           {mergedExperiences.map((experience, index) => (
             <Reveal key={experience.sys.id} delay={index * 0.05}>
               <Card className="border-line bg-surface">

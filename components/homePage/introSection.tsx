@@ -16,7 +16,10 @@ export default async function IntroSection({ lang }: { lang: Locale }) {
   const ctaContact = kickerData?.ctaContact ?? dict.hero.ctaContact;
 
   return (
-    <section className="relative grid-shell flex min-h-[calc(100svh_-_var(--site-header-height,5rem))] py-10 lg:py-16">
+    <section
+      id="intro"
+      className="relative grid-shell flex min-h-[calc(100svh_-_var(--site-header-height,5rem))] py-10 lg:py-16"
+    >
       <Reveal className="flex flex-col w-full justify-center items-center">
         <div className="flex flex-6 flex-col justify-center items-center">
           <p className="kicker mb-5">{kicker}</p>
@@ -27,22 +30,24 @@ export default async function IntroSection({ lang }: { lang: Locale }) {
             {subhead}
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-8 max-sm:mt-16 max-sm:gap-4">
-            <Button asChild>
+            <Button
+              asChild
+              trackId="hero_explore_work"
+              aria-label="Explore selected work"
+            >
               <a href="#work">{ctaWork}</a>
             </Button>
-            <Button asChild variant="outline">
+            <Button
+              asChild
+              variant="outline"
+              trackId="hero_start_conversation"
+              aria-label="Start a conversation"
+            >
               <a href="#contact">{ctaContact}</a>
             </Button>
           </div>
         </div>
 
-        {/* <Lottie
-          src="https://lottie.host/80340bbf-fe59-466a-950b-e235567b1cd3/QgIagDGDA3.lottie"
-          speed={0.1}
-          className="flex-1 w-full aspect-auto self-center justify-self-center lg:max-w-lg"
-        /> */}
-        {/* Mobile: pinned near the bottom edge of the fold as a scroll cue.
-            Desktop: sits centered in the hero column flow. */}
         <ScrollIndicator className="h-24 w-24 self-center max-sm:absolute max-sm:bottom-6 max-sm:left-1/2 max-sm:-translate-x-1/2" />
       </Reveal>
     </section>

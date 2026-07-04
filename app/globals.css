@@ -195,6 +195,7 @@ h4 {
   scroll-padding-inline: 1.5rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  justify-content: safe center;
 }
 
 .carousel-track::-webkit-scrollbar {

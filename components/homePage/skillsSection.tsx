@@ -20,7 +20,7 @@ export default async function SkillsSection({ lang }: { lang: Locale }) {
         <Reveal>
           <p className="kicker">{dict.sections.skillsKicker}</p>
           <h2 className="section-heading mt-4">{mergedSkills.heading}</h2>
-          <p className="mt-4 max-w-2xl text-base leading-8 text-muted">{mergedSkills.description}</p>
+          <p className="mt-4 max-w-2xl mx-auto text-base leading-8 text-muted">{mergedSkills.description}</p>
         </Reveal>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-3">

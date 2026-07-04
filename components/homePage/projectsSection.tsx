@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { ProjectsCarousel } from "@/components/homePage/projectsCarousel";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,7 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
       <div className="grid-shell">
         <Reveal>
           <p className="kicker">{dict.sections.workKicker}</p>
-          <h2 className="section-heading mt-4 max-w-3xl text-balance">
+          <h2 className="section-heading mt-4 max-w-3xl mx-auto text-balance">
             {dict.sections.workHeading}
           </h2>
         </Reveal>
@@ -61,7 +60,7 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                         />
                       )}
                     </div>
-                    <CardContent className="flex flex-1 flex-col justify-between gap-6 p-8 max-sm:gap-4 max-sm:p-6">
+                    <CardContent className="flex flex-1 flex-col items-center justify-between gap-6 p-8 max-sm:gap-4 max-sm:p-6">
                       <div>
                         <p className="kicker">
                           {project.fields.company ||
@@ -79,6 +78,9 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                         variant="secondary"
                         size="sm"
                         className="w-fit"
+                        trackId="view_project"
+                        trackProps={{ project: project.fields.slug }}
+                        aria-label="View project story"
                       >
                         <Link href={`/${lang}/work/${project.fields.slug}`}>
                           {dict.projectCard.cta}

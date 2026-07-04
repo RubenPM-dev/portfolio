@@ -1,13 +1,10 @@
 "use client";
 
 import { Children, useRef, useState, type ReactNode } from "react";
+import { track } from "@vercel/analytics";
 
 import { cn } from "@/lib/utils";
 
-// Horizontal snap carousel used by ProjectsSection. The cards are rendered on
-// the server and passed in as `children`; this client wrapper only owns the
-// scroll container and the mobile pagination dots (active dot tracked from the
-// scroll position, dot taps scroll the matching card into view).
 export function ProjectsCarousel({
   children,
   dotLabel,
@@ -58,7 +55,10 @@ export function ProjectsCarousel({
           <button
             key={index}
             type="button"
-            onClick={() => goTo(index)}
+            onClick={() => {
+              track("button_click", { id: "carousel_dot", index: index + 1 });
+              goTo(index);
+            }}
             aria-label={`${dotLabel} ${index + 1}`}
             aria-current={index === active}
             className={cn(

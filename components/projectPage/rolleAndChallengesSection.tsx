@@ -66,7 +66,12 @@ export default function RolleAndChallengesSection({
 
           <div className="flex flex-wrap gap-3">
             {project.fields.links?.website ? (
-              <Button asChild>
+              <Button
+                asChild
+                trackId="project_website"
+                trackProps={{ project: project.fields.slug }}
+                aria-label="Open project website"
+              >
                 <a
                   href={project.fields.links.website}
                   target="_blank"

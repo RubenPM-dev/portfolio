@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { track } from "@vercel/analytics";
 
 type Theme = "light" | "dark";
 
@@ -13,17 +14,11 @@ function getSystemTheme(): Theme {
 }
 
 export function ThemeToggle() {
-  // Effective theme, used only for the icon/label. `null` until mounted so SSR
-  // and the first client render agree (both show the moon).
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-    // A saved value means the user explicitly picked a theme -> honour it.
-    // Otherwise follow the system: leave `data-theme` off so the CSS
-    // `prefers-color-scheme` rules drive the colours (and keep following live
-    // system changes).
     const sync = () => {
       const saved = window.localStorage.getItem(storageKey);
       if (saved === "light" || saved === "dark") {
@@ -44,15 +39,14 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     const next: Theme = (theme ?? getSystemTheme()) === "light" ? "dark" : "light";
-    // Only persist on an explicit user choice.
+    track("button_click", { id: "theme_toggle", theme: next });
+
     window.localStorage.setItem(storageKey, next);
     document.documentElement.dataset.theme = next;
     document.documentElement.style.colorScheme = next;
     setTheme(next);
   };
 
-  // Show the icon for the theme you'd switch TO. Default to the moon before
-  // mount so SSR and first client paint agree.
   const showSun = theme === "dark";
 
   return (

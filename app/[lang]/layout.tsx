@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { BeamField } from "@/components/motion/beam-field";
 import { siteBaseUrl } from "@/lib/site-config";
 import { isLocale, locales } from "@/lib/i18n/config";
@@ -79,6 +80,7 @@ export default async function RootLayout({
       <body className="min-h-full bg-background text-foreground" suppressHydrationWarning>
         <BeamField />
         <div className="relative z-10">{children}</div>
+        <Analytics />
       </body>
     </html>
   );

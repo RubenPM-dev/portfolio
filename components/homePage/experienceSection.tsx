@@ -17,10 +17,10 @@ export default async function ExperienceSection({ lang }: { lang: Locale }) {
           <p className="kicker">{dict.sections.experienceKicker}</p>
           <h2 className="section-heading mt-4 max-w-3xl mx-auto">{dict.sections.experienceHeading}</h2>
         </Reveal>
-        <div className="mt-10 grid gap-5 md:grid-cols-2 text-left">
+        <div className="mt-10 grid gap-5 text-left md:grid-cols-2">
           {mergedExperiences.map((experience, index) => (
-            <Reveal key={experience.sys.id} delay={index * 0.05}>
-              <Card className="border-line bg-surface">
+            <Reveal key={experience.sys.id} delay={index * 0.05} className="h-full">
+              <Card className="h-full border-line bg-surface">
                 <CardContent className="p-8">
                   <p className="kicker">{experience.fields.period}</p>
                   <h3 className="mt-3 text-2xl leading-tight">{experience.fields.title}</h3>

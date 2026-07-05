@@ -55,6 +55,7 @@ export default async function Home({ params }: Props) {
       >
         <a href="#work" className="focus-ring text-xs font-bold">{dict.nav.work}</a>
         {/* <a href="#about" className="focus-ring text-xs font-bold">{dict.nav.about}</a> */}
+        <a href="#experience" className="focus-ring text-xs font-bold">{dict.nav.experience}</a>
         <a href="#skills" className="focus-ring text-xs font-bold">{dict.nav.skills}</a>
         <a href="#contact" className="focus-ring text-xs font-bold">{dict.nav.contact}</a>
       </SiteHeader>

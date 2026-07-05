@@ -110,7 +110,7 @@ export default async function ProjectPage({ params }: Props) {
         left={
           <Link
             href={`/${lang}`}
-            className="kicker focus-ring rounded-sm hover:text-ink p-4"
+            className="kicker focus-ring rounded-sm hover:text-ink p-2"
           >
             {`< ${dict.project.back}`}
           </Link>

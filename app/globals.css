@@ -75,7 +75,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-manrope);
-  --font-serif: var(--font-newsreader);
+  --font-serif: var(--font-sans);
   --color-ivory: var(--background);
   --color-ink: var(--foreground);
   --color-muted: var(--muted);
@@ -103,7 +103,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-manrope), sans-serif;
+  font-family: var(--font-sans), sans-serif;
   text-rendering: optimizeLegibility;
   transition: background-color 180ms ease, color 180ms ease;
 }
@@ -112,7 +112,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-newsreader), serif;
+  font-family: var(--font-sans), sans-serif;
   letter-spacing: -0.02em;
 }
 
@@ -156,10 +156,6 @@ h4 {
   flex: 1 1 auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  /* --surface is almost identical to --background, so the panel would vanish.
-     Mixing in a little --foreground darkens it in light mode / lightens it in
-     dark mode → visible against the page, and theme-aware since both vars flip.
-     Higher surface % = subtler; add `transparent` to a stop for see-through. */
   background: linear-gradient(160deg,
       color-mix(in srgb, var(--surface) 94%, var(--foreground)) 0%,
       color-mix(in srgb, var(--surface) 85%, var(--foreground)) 100%);
@@ -169,10 +165,6 @@ h4 {
   border-top: 1px solid var(--line);
 }
 
-/* Grayscale Lottie recolour: invert (black<->white) in the dark theme. Keyed
-   off the same [data-theme] / prefers-color-scheme signals as the rest of the
-   theme, because Tailwind's dark: variant only tracks the system setting, not
-   the manual toggle. Opt in with the Lottie `invertOnDark` prop. */
 .lottie-invert-dark {
   transition: filter 180ms ease;
 }
@@ -213,11 +205,14 @@ h4 {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 18px 40px -18px var(--card-shadow);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .floating-card:hover {
-  box-shadow: 0 26px 52px -20px var(--card-shadow-hover);
+  /* Lighter, more diffuse shadow (uses the softer base tint, not the darker
+     hover tint) + a small lift to signal the whole card is clickable. */
+  box-shadow: 0 24px 60px -24px var(--card-shadow);
+  transform: scale(1.02);
 }
 
 .focus-ring:focus-visible {
@@ -225,7 +220,6 @@ h4 {
   outline-offset: 3px;
 }
 
-/* Floating glass bar inside the site header (see components/site-header.tsx). */
 .header {
   position: sticky;
   margin: 0 auto;
@@ -255,7 +249,6 @@ h4 {
   -webkit-backdrop-filter: blur(40px) saturate(1.5);
 }
 
-
 .footer {
   display: flex;
   flex-direction: row;
@@ -268,9 +261,6 @@ h4 {
   padding-block: 2rem;
 }
 
-/* All viewport-width (mobile) overrides, gathered in one block placed after the
-   base rules they override so the cascade resolves correctly (a @media rule adds
-   no specificity, so it must come later in source order to win). */
 @media (max-width: 639px) {
   .carousel-track {
     gap: 1rem;
@@ -302,10 +292,22 @@ h4 {
   }
 }
 
+@media (min-width: 640px) {
+  /* Desktop: the card fills the height left below the section title so the whole
+     ProjectsSection (kicker + heading + card) sits within one screen beneath the
+     header. Floored at 600px (below ~800px tall viewports it stops shrinking and
+     is allowed to overflow) and capped at 42rem so it stays "less tall" on big
+     displays. The ~9.5rem allowance covers the header, title, margins and the
+     track's shadow padding. */
+  .carousel-item-fill {
+    height: clamp(
+      360px,
+      calc(100svh - var(--site-header-height, 5rem) - 10rem),
+      42rem
+    );
+  }
+}
 
-
-
-/* Cursor-reactive god-rays (see components/motion/beam-field.tsx). */
 .beam-field {
   position: fixed;
   inset: 0;
@@ -315,12 +317,9 @@ h4 {
   --beam-angle: 0deg;
   --beam-shift: 0vw;
   --beam-opacity: 0.85;
-  /* Cursor intensity is applied once here so per-ray opacity is free to
-     animate the underwater caustic shimmer. */
   opacity: var(--beam-opacity);
 }
 
-/* Wide, soft glow at the light source, anchored above the top of the page. */
 .beam-source {
   position: absolute;
   top: -40vh;
@@ -338,7 +337,6 @@ h4 {
   animation: source-breathe 26s ease-in-out infinite;
 }
 
-/* The whole fan leans toward the cursor; individual rays fan out inside it. */
 .beam-fan {
   position: absolute;
   top: -40vh;
@@ -354,23 +352,15 @@ h4 {
   top: 0;
   left: 0;
   width: var(--ray-width, 20vmax);
-  /* Long enough to fall past the fold and light the bottom of the page. */
   height: 200vh;
   transform: translateX(-50%) rotate(var(--ray-offset, 0deg));
   transform-origin: top center;
-  /* Static fallback (used when reduced-motion disables the animation). */
   opacity: calc(var(--ray-opacity, 1) * 0.6);
   mix-blend-mode: var(--beam-blend);
   will-change: transform, opacity;
   animation: ray-caustic var(--ray-dur, 20s) ease-in-out var(--ray-delay, 0s) infinite;
 }
 
-/* Two tone layers stacked inside each ray. Their opacities cross-fade in
-   counter-phase, so the ray's colour drifts between the surface tone
-   (--beam-color) and the deeper-water tone (--beam-color-2) as it animates —
-   like sunlight refracting down through sea water. Each layer's blur is
-   rasterised once and cached; only the cheap opacity animates, so there's no
-   per-frame repaint of the heavy blur. */
 .ray::before,
 .ray::after {
   content: "";
@@ -382,10 +372,7 @@ h4 {
 
 .ray::before {
   background: linear-gradient(to bottom, var(--beam-color) 0%, transparent 90%);
-  /* Base opacity is the reduced-motion resting mix; the animation overrides it. */
   opacity: 0.7;
-  /* Same period as the brightness caustic (seamless loop) but a shifted phase,
-     so colour and brightness don't pulse in lockstep. */
   animation: ray-tone-surface var(--ray-dur, 20s) ease-in-out calc(var(--ray-delay, 0s) - 4s) infinite;
 }
 
@@ -395,9 +382,6 @@ h4 {
   animation: ray-tone-deep var(--ray-dur, 20s) ease-in-out calc(var(--ray-delay, 0s) - 4s) infinite;
 }
 
-/* Underwater caustic loop: brightness breathes while the ray drifts and
-   widens, so the light keeps moving even with the cursor still. Start and end
-   frames match for a seamless loop; per-ray duration/delay keep them desynced. */
 @keyframes ray-caustic {
 
   0%,
@@ -422,8 +406,6 @@ h4 {
   }
 }
 
-/* Counter-phase tone cross-fade (see .ray::before / .ray::after). Offset from
-   the brightness caustic so hue and brightness don't pulse in lockstep. */
 @keyframes ray-tone-surface {
 
   0%,
@@ -448,7 +430,6 @@ h4 {
   }
 }
 
-/* Slow breathing of the source glow. */
 @keyframes source-breathe {
 
   0%,
@@ -473,9 +454,6 @@ h4 {
   }
 }
 
-/* Phone mockup for the scroll-driven app showcase. */
-/* Per-screen scroll distance for the phone showcase (used in phone-showcase.tsx).
-   Mobile gets less so the whole thing takes fewer swipes. */
 :root {
   --phone-vh-per-screen: 150;
 }
@@ -489,7 +467,7 @@ h4 {
 .phone-frame {
   position: relative;
   aspect-ratio: 9 / 18.8;
-  height: min(58vh, 560px);
+  height: min(65vh, 800px);
   border-radius: 2.75rem;
   background: #0b0b0d;
   padding: 0.55rem;
@@ -498,11 +476,9 @@ h4 {
     0 0 0 1px var(--line);
 }
 
-/* Smaller phone on mobile so the single-side captions have room beside it.
-   Radius/padding scale down too so the smaller frame isn't over-rounded. */
 @media (max-width: 1023px) {
   .phone-frame {
-    height: min(49vh, 360px);
+    height: min(55vh, 500px);
     border-radius: 1.9rem;
     padding: 0.4rem;
   }
@@ -517,7 +493,6 @@ h4 {
   background: #000;
 }
 
-/* Dynamic Island: a free-floating pill below the top edge. */
 .phone-island {
   position: absolute;
   top: 1.14rem;

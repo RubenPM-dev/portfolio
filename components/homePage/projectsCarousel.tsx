@@ -45,7 +45,7 @@ export function ProjectsCarousel({
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        className="carousel-track -mx-6 px-6 pt-6 pb-16 max-sm:pt-4 max-sm:pb-12"
+        className="carousel-track -mx-6 px-6 pt-4 pb-6 max-sm:pt-4 max-sm:pb-12"
       >
         {children}
       </div>

@@ -72,7 +72,9 @@ export const fallbackProjects: Project[] = [
       features: [
         { heading: "Optimistic Updates", body: "Immediate UI feedback with rollback on failure." },
         { heading: "Deterministic Reconciliation", body: "Ensures consistent state across clients." }
-      ]
+      ],
+      legalCaption:
+        "Trademarks and screenshots are the property of Electronic Arts, shown for portfolio purposes only.",
     },
   },
   {
@@ -101,6 +103,8 @@ export const fallbackProjects: Project[] = [
         website: "https://www.ea.com",
       },
       featuredOrder: 2,
+      legalCaption:
+        "Trademarks and screenshots are the property of Electronic Arts, shown for portfolio purposes only.",
     },
   },
 ];

@@ -1,8 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ProjectsCarousel } from "@/components/homePage/projectsCarousel";
+import { ProjectCardLink } from "@/components/homePage/projectCardLink";
 import { Reveal } from "@/components/motion/reveal";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProjects } from "@/lib/contentful/queries";
 import { getImageUrl } from "@/lib/contentful/image";
@@ -18,7 +17,7 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
   return (
     <section
       id="work"
-      className="hairline pt-[clamp(4rem,8vw,8rem)] pb-[clamp(4rem,8vw,8rem)] max-sm:pt-6 max-sm:pb-4"
+      className="hairline max-sm:pt-6 max-sm:pb-4 sm:pt-[calc(var(--site-header-height,5rem)+1rem)] sm:pb-4"
     >
       <div className="grid-shell">
         <Reveal>
@@ -28,7 +27,7 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
           </h2>
         </Reveal>
 
-        <div className="mt-14 max-sm:mt-6">
+        <div className="mt-4 max-sm:mt-6">
           <ProjectsCarousel dotLabel={dict.projectCard.goToProject}>
             {mergedProjects.map((project, _) => {
               const projectImage = project.fields.heroSmall
@@ -36,12 +35,15 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                 : null;
 
               return (
-                <div
+                <ProjectCardLink
                   key={project.sys.id}
-                  className="carousel-item carousel-item-fill w-[85vw] max-w-[26rem] sm:h-auto sm:w-[24rem]"
+                  href={`/${lang}/work/${project.fields.slug}`}
+                  slug={project.fields.slug}
+                  ariaLabel={`${dict.projectCard.cta}: ${project.fields.title}`}
+                  className="carousel-item carousel-item-fill w-[85vw] max-w-[26rem] sm:w-[32rem] sm:max-w-[32rem]"
                 >
-                  <Card className="floating-card flex flex-1 flex-col overflow-hidden bg-surface">
-                    <div className="relative aspect-[16/9] w-full shrink-0">
+                  <Card className="floating-card flex h-full flex-1 flex-col overflow-hidden bg-surface">
+                    <div className="relative aspect-[16/9] w-full shrink-0 sm:max-h-[50%]">
                       {projectImage ? (
                         <Image
                           src={projectImage}
@@ -50,7 +52,7 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                             project.fields.title
                           }
                           fill
-                          sizes="(max-width: 640px) 85vw, 24rem"
+                          sizes="(max-width: 640px) 85vw, 32rem"
                           className="object-cover object-left-top"
                         />
                       ) : (
@@ -60,35 +62,23 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                         />
                       )}
                     </div>
-                    <CardContent className="flex flex-1 flex-col items-center justify-between gap-6 p-8 max-sm:gap-4 max-sm:p-6">
-                      <div>
-                        <p className="kicker">
-                          {project.fields.company ||
-                            dict.projectCard.featuredFallback}
-                        </p>
-                        <h3 className="mt-3 text-2xl leading-tight">
-                          {project.fields.title}
-                        </h3>
-                        <p className="mt-4 text-sm leading-7 text-muted">
-                          {project.fields.excerpt}
-                        </p>
-                      </div>
-                      <Button
-                        asChild
-                        variant="secondary"
-                        size="sm"
-                        className="w-fit"
-                        trackId="view_project"
-                        trackProps={{ project: project.fields.slug }}
-                        aria-label="View project story"
-                      >
-                        <Link href={`/${lang}/work/${project.fields.slug}`}>
-                          {dict.projectCard.cta}
-                        </Link>
-                      </Button>
+                    <CardContent className="flex min-h-0 flex-1 flex-col items-start gap-2 p-6 text-left max-sm:p-5">
+                      <p className="kicker">
+                        {project.fields.company ||
+                          dict.projectCard.featuredFallback}
+                      </p>
+                      <h3 className="text-2xl leading-tight">
+                        {project.fields.title}
+                      </h3>
+                      <p className="line-clamp-3 text-sm leading-6 text-muted">
+                        {project.fields.excerpt}
+                      </p>
+                      <span className="mt-auto inline-flex shrink-0 items-center justify-center rounded-full bg-zinc-100 px-4 py-2 text-xs font-medium text-zinc-900">
+                        {dict.projectCard.cta}
+                      </span>
                     </CardContent>
                   </Card>
-                </div>
+                </ProjectCardLink>
               );
             })}
           </ProjectsCarousel>

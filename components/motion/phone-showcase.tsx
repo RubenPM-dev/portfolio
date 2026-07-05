@@ -230,12 +230,12 @@ export function PhoneShowcase({
       <div
         className="sticky flex flex-col"
         style={{
-          top: "calc(var(--site-header-height, 5rem) + 1.25rem)",
-          height: "calc(100dvh - var(--site-header-height, 5rem) - 1.25rem)",
+          top: "calc(var(--site-header-height, 5rem) + 0.5rem)",
+          height: "calc(100dvh - var(--site-header-height, 5rem) - 0.5rem)",
         }}
       >
         {header ? (
-          <div className="grid-shell shrink-0 pt-2">{header}</div>
+          <div className="flex w-full justify-center pt-2">{header}</div>
         ) : null}
 
         <div className="grid-shell grid min-h-0 flex-1 grid-cols-[auto_minmax(0,1fr)] items-center gap-5 lg:grid-cols-[1fr_auto_1fr] lg:gap-10">

@@ -73,7 +73,7 @@ export function SiteHeader({
   );
 
   const desktopHeader = (
-    <div className="flex w-full items-center justify-between gap-x-4 gap-y-4">
+    <div className="flex w-full items-center justify-between gap-x-4 gap-y-0">
       <div className="m-2 flex items-center whitespace-nowrap">{left}</div>
       <div className="flex-grow" />
       <div className="flex flex-row whitespace-nowrap justify-around gap-x-4">
@@ -85,7 +85,7 @@ export function SiteHeader({
   );
 
   const mobileHeader = (
-    <div className="flex-col w-full items-center justify-between gap-x-4 gap-y-4">
+    <div className="flex-col w-full items-center justify-between gap-x-4 gap-y-0">
       <div className="flex items-center justify-between w-full">
         {left}
         {pageSettings}

@@ -19,7 +19,7 @@ export default function PhoneShowcaseSection({ project }: { project: Project }) 
         captions={project.fields.features || []}
         header={
           <>
-            <h1 className="mt-3 max-w-4xl text-balance text-[clamp(1.75rem,4vw,3.25rem)] leading-[1]">
+            <h1 className="max-w-4xl text-balance text-[clamp(1.75rem,4vw,3.25rem)]">
               {project.fields.title}
             </h1>
           </>

@@ -127,7 +127,7 @@ h4 {
 }
 
 .section-gap {
-  padding-block: clamp(4rem, 8vw, 8rem);
+  padding-block: clamp(3rem, 6vw, 6rem);
 }
 
 .kicker {
@@ -243,7 +243,8 @@ h4 {
   width: 100%;
   max-width: 72rem;
   margin-inline: auto;
-  padding: 0.75rem 1.25rem;
+  /* padding: 0.75rem 1.25rem; */
+  padding: 0 1.25rem;
   border: 1px solid color-mix(in oklab, var(--line) 60%, transparent);
   border-radius: var(--radius);
   background-color: color-mix(in oklab, var(--background) 60%, transparent);
@@ -532,7 +533,12 @@ h4 {
 
 .store-badges {
   flex: 1 1 auto;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 @media (max-width: 1023px) {

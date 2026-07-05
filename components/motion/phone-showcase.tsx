@@ -61,10 +61,6 @@ function defaultCaption(index: number): ShowcaseCaption {
 // Vertical distance a caption travels across the pinned area.
 const CAPTION_TRAVEL = "42vh";
 
-// Captions sequence one at a time (with a clean gap between them, unlike the
-// phone's continuous cross-fade). Each owns an equal band [i/n, (i+1)/n]: it
-// enters at the top and fades in, holds centred beside the phone, then fades
-// out as it exits at the bottom. Opacity reaches exactly 0 at both band edges.
 function captionSlot(index: number, count: number) {
   const units = bandUnits(count);
   const bandStart = index / units;
@@ -169,22 +165,6 @@ export function PhoneShowcase({
     }
   });
 
-  // Scroll cue: fully visible at the very top, then handed off to the first
-  // caption. Caption 0's band starts at progress 0 and reaches full opacity at
-  // FADE_FRACTION / units, so clear the cue within the first half of that window
-  // — it's completely gone as the caption starts fading in. (Screen-count
-  // independent; `Math.max` guards the empty/single-screen case before returns.)
-  const captionFadeIn = FADE_FRACTION / Math.max(1, bandUnits(screens.length));
-  // Three-point range that explicitly pins opacity at 0 from the hand-off all
-  // the way to the end (progress 1). A plain two-point range relies on clamp/
-  // extrapolation, so any slight backward jitter in scrollYProgress can nudge
-  // the cue back into view after the caption appears — this can't.
-  const scrollHintOpacity = useTransform(
-    scrollYProgress,
-    [0, captionFadeIn * 0.5, 1],
-    [1, 0, 0],
-  );
-
   if (!screens.length) {
     return null;
   }
@@ -229,14 +209,9 @@ export function PhoneShowcase({
       ref={ref}
       className="relative"
       style={{
-        // Per-screen scroll distance is a CSS var so mobile can use less (see
-        // globals.css). Total = per-screen * bands.
         height: `calc(var(--phone-vh-per-screen, ${VH_PER_SCREEN}) * ${bandUnits(screens.length)} * 1.4vh)`,
       }}
     >
-      {/* Eager-load every screen up front (same src + sizes as the visible
-          image) so a screen is already cached before it first slides in —
-          otherwise the first pass shows black while it lazy-loads. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-0 top-0 h-px w-px overflow-hidden opacity-0"
@@ -255,14 +230,12 @@ export function PhoneShowcase({
       <div
         className="sticky flex flex-col"
         style={{
-          // Pin just below the floating header (rather than top-0 + big padding),
-          // so content loads flush under it with no gap.
           top: "calc(var(--site-header-height, 5rem) + 1.25rem)",
           height: "calc(100dvh - var(--site-header-height, 5rem) - 1.25rem)",
         }}
       >
         {header ? (
-          <div className="grid-shell shrink-0 pt-2 lg:pt-10">{header}</div>
+          <div className="grid-shell shrink-0 pt-2">{header}</div>
         ) : null}
 
         <div className="grid-shell grid min-h-0 flex-1 grid-cols-[auto_minmax(0,1fr)] items-center gap-5 lg:grid-cols-[1fr_auto_1fr] lg:gap-10">
@@ -311,7 +284,6 @@ export function PhoneShowcase({
                 <StoreBadges
                   appStoreUrl={project.fields.links?.appStore}
                   googlePlayUrl={project.fields.links?.googlePlay}
-                  className="store-badges"
                 />
               </div>
             ) : null}

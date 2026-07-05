@@ -104,6 +104,7 @@ export interface Project {
     };
     featuredOrder?: number;
     features?: { heading: string; body: string }[];
+    legalCaption: string;
   };
 }
 

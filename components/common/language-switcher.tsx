@@ -41,7 +41,7 @@ export function LanguageSwitcher({
     <div
       role="group"
       aria-label={label}
-      className="relative inline-flex items-center rounded-full border border-line p-0.5 text-xs font-medium uppercase tracking-[0.1em]"
+      className="relative inline-flex shrink-0 items-center rounded-full border border-line p-0.5 text-xs font-medium uppercase tracking-[0.1em]"
     >
       <span
         aria-hidden="true"

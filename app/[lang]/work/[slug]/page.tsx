@@ -110,7 +110,7 @@ export default async function ProjectPage({ params }: Props) {
         left={
           <Link
             href={`/${lang}`}
-            className="kicker focus-ring rounded-sm hover:text-ink"
+            className="kicker focus-ring rounded-sm hover:text-ink p-4"
           >
             {`< ${dict.project.back}`}
           </Link>
@@ -120,7 +120,7 @@ export default async function ProjectPage({ params }: Props) {
       <PhoneShowcaseSection project={project} />
       <RolleAndChallengesSection project={project} lang={lang} />
       <HeroImageSection project={project} />
-
+      <p className="text-muted m-2 text-center" style={{ fontSize: "6pt" }}>*{project.fields.legalCaption}</p>
       <Footer lang={lang} />
     </>
   );

@@ -54,10 +54,8 @@ export const fallbackProjects: Project[] = [
       company: "Electronic Arts",
       teamSize: 8,
       technologies: ["Swift 6", "SwiftUI", "Ably", "SignalR", "AsyncStream"],
-      challenges: [
-        "Ensure live state correctness under rapidly changing match conditions.",
-        "Prevent stale events from overwriting newer local or server states.",
-      ],
+      challenges: 
+        "Ensure live state correctness under rapidly changing match conditions. Prevent stale events from overwriting newer local or server states.",
       contributions: [
         "Designed optimistic update and rollback flows with stale-event rejection.",
         "Shipped reusable realtime primitives for comments, reactions, and thread updates.",
@@ -88,10 +86,7 @@ export const fallbackProjects: Project[] = [
       company: "Electronic Arts",
       teamSize: 12,
       technologies: ["SwiftUI", "XCTest", "Instruments", "Analytics"],
-      challenges: [
-        "Ship multiple high-visibility features on a fixed global event deadline.",
-        "Maintain quality under elevated traffic and engagement spikes.",
-      ],
+      challenges: "Ship multiple high-visibility features on a fixed global event deadline. Maintain quality under elevated traffic and engagement spikes.",
       contributions: [
         "Coordinated delivery across product, design, backend, and QA.",
         "Established release risk controls and validation checkpoints.",
@@ -129,11 +124,11 @@ export const fallbackExperiences: Experience[] = [
   {
     sys: { id: "exp-2", type: "Entry", contentType: { sys: { id: "experience" } } },
     fields: {
-      title: "Lead Mobile Engineer (Racenet)",
+      title: "Lead React Native Engineer",
       company: "Electronic Arts",
       period: "2020 - 2023",
       summary:
-        "Sole developer for iOS and Android apps with around 920K active users.",
+        "Lead developer for iOS and Android apps with around 920K active users.",
       highlights: [
         "Delivered secure OAuth/PKCE native-web architecture.",
         "Owned app architecture, features, and store releases end to end.",

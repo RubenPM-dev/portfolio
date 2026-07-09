@@ -1,10 +1,10 @@
-import { ParallaxImage } from "@/components/motion/parallax-image";
+import { ParallaxImage } from "@/components/motion/parallaxImage";
 import { Reveal } from "@/components/motion/reveal";
 import { getAbout } from "@/lib/contentful/queries";
 import { getImageUrl } from "@/lib/contentful/image";
 import { contentfulLocale, type Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { fallbackAbout } from "@/lib/site-config";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import { fallbackAbout } from "@/lib/siteConfig";
 
 export default async function AboutSection({ lang }: { lang: Locale }) {
   const dict = getDictionary(lang);

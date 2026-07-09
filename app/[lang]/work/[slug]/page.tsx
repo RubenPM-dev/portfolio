@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { SiteHeader } from "@/components/common/site-header";
+import { SiteHeader } from "@/components/common/siteHeader";
 import {
   fallbackProjects,
   fallbackSettings,
   siteBaseUrl,
-} from "@/lib/site-config";
+} from "@/lib/siteConfig";
 import {
   getProjectBySlug,
   getProjectSlugs,
@@ -19,17 +19,18 @@ import {
   isLocale,
   locales,
 } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getDictionary } from "@/lib/i18n/getDictionary";
 import Footer from "@/components/common/footer";
+import ProjectsSection from "@/components/homePage/projectsSection";
+import { BackToTop } from "@/components/common/backToTop";
 import { Props } from "@/app/types/props";
 import PhoneShowcaseSection from "@/components/projectPage/phoneShowcaseSection";
 import RolleAndChallengesSection from "@/components/projectPage/rolleAndChallengesSection";
 import HeroImageSection from "@/components/projectPage/heroImageSection";
+import ContactForm from "@/components/common/contactForm";
 
 export const revalidate = 120;
 
-// Route params arrive URL-encoded (e.g. "EA%20SPORTS%20App"), so decode before
-// matching against the raw Contentful slug. (Prefer URL-safe slugs regardless.)
 function decodeSlug(slug: string): string {
   try {
     return decodeURIComponent(slug);
@@ -120,8 +121,13 @@ export default async function ProjectPage({ params }: Props) {
       <PhoneShowcaseSection project={project} />
       <RolleAndChallengesSection project={project} lang={lang} />
       <HeroImageSection project={project} />
-      <p className="text-muted m-2 text-center" style={{ fontSize: "6pt" }}>*{project.fields.legalCaption}</p>
+      <div className="flex w-full justify-center">
+        <p className="text-muted m-4 text-center max-w-lg" style={{ fontSize: "8pt" }}>{project.fields.legalCaption}</p>
+      </div>
+      <ProjectsSection lang={lang} excludeSlug={project.fields.slug} />
+      <ContactForm lang={lang} />
       <Footer lang={lang} />
+      <BackToTop />
     </>
   );
 }

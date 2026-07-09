@@ -35,9 +35,6 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
-  // Stable, English-only analytics id — kept independent of the (localized)
-  // button label so events group consistently in Analytics across languages.
-  // When set, a click fires a `button_click` event `{ id, ...trackProps }`.
   trackId?: string;
   trackProps?: Record<string, string | number | boolean>;
 }

@@ -17,10 +17,11 @@
   },
   "sections": {
     "aboutKicker": "Sobre mí",
-    "workKicker": "Proyectos seleccionados",
+    "workKicker": "Proyectos",
     "workHeading": "Proyectos que han marcado mi trayectoria como ingeniero.",
+    "otherWorkeHeading": "Otros proyectos que han marcado mi trayectoria como ingeniero.",
     "experienceKicker": "Experiencia",
-    "experienceHeading": "Fichas editoriales, no cronologías.",
+    "experienceHeading": "Un recorrido por los productos, los desafíos técnicos y las decisiones de ingeniería que definen mi experiencia como Ingeniero Senior de Desarrollo Móvil.",
     "skillsKicker": "Habilidades",
     "photographyKicker": "Fotografía",
     "photographyHeading": "Momentos de calma lejos de los ciclos de versiones y los paneles de incidencias.",
@@ -30,7 +31,7 @@
     "featuredFallback": "Producto destacado",
     "role": "Rol",
     "team": "Equipo",
-    "cta": "Ver el caso del proyecto",
+    "cta": "Ver proyecto",
     "goToProject": "Ir al proyecto"
   },
   "contactForm": {

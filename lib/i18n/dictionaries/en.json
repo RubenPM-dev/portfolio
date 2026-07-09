@@ -19,8 +19,9 @@
     "aboutKicker": "About",
     "workKicker": "Selected Work",
     "workHeading": "    Projects that shaped my engineering journey.",
+    "otherWorkeHeading": "Other projects that shaped my engineering journey.",
     "experienceKicker": "Experience",
-    "experienceHeading": "Editorial cards, not timelines.",
+    "experienceHeading": "A showcase of the products, technical challenges, and engineering decisions that define my experience as a Senior Mobile Engineer.",
     "skillsKicker": "Skills",
     "photographyKicker": "Photography",
     "photographyHeading": "Quiet moments away from release cycles and incident dashboards.",
@@ -30,7 +31,7 @@
     "featuredFallback": "Featured Product",
     "role": "Role",
     "team": "Team",
-    "cta": "View Project Story",
+    "cta": "View Project",
     "goToProject": "Go to project"
   },
   "contactForm": {

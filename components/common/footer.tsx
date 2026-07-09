@@ -1,6 +1,6 @@
 import { getSettings } from "@/lib/contentful/queries";
 import { contentfulLocale, type Locale } from "@/lib/i18n/config";
-import { fallbackSettings } from "@/lib/site-config";
+import { fallbackSettings } from "@/lib/siteConfig";
 
 export default async function Footer({ id, lang }: { id?: string; lang: Locale }) {
   const settings = await getSettings(contentfulLocale[lang]);

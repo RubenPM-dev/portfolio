@@ -24,11 +24,7 @@ export function LanguageSwitcher({
   const pathname = usePathname();
   const router = useRouter();
 
-  // Optimistic selection so the thumb + flag animate the instant you click,
-  // rather than waiting for the (server) navigation to resolve. Re-syncs to the
-  // real locale once it lands.
   const [selected, setSelected] = useState(locale);
-  useEffect(() => setSelected(locale), [locale]);
 
   function switchTo(next: Locale) {
     if (next === selected) {
@@ -42,8 +38,7 @@ export function LanguageSwitcher({
     const nextPath = segments.join("/") || `/${next}`;
 
     persistLocale(next);
-    router.push(nextPath);
-    router.refresh();
+    router.push(nextPath, { scroll: false });
   }
 
   return (
@@ -52,8 +47,6 @@ export function LanguageSwitcher({
       aria-label={label}
       className="relative inline-flex shrink-0 items-center rounded-full border border-line p-0.5 text-xs font-medium uppercase tracking-[0.1em]"
     >
-      {/* Sliding highlight — springs to the active language (overshoots slightly
-          then settles). Percentage x = per-locale offset of its own width. */}
       <motion.span
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0.5 left-0.5 w-12 rounded-full bg-ink"
@@ -77,7 +70,6 @@ export function LanguageSwitcher({
             )}
           >
             <span className="text-[0.7rem]">{code}</span>
-            {/* The active flag pops up with a bounce as it's selected. */}
             <motion.span
               className="ml-0.5 text-[15px]"
               animate={{ scale: active ? 1.2 : 1 }}

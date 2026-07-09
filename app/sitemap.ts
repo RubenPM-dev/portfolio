@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { fallbackProjects, siteBaseUrl } from "@/lib/site-config";
+import { fallbackProjects, siteBaseUrl } from "@/lib/siteConfig";
 import { getProjectSlugs } from "@/lib/contentful/queries";
 import { contentfulLocale, defaultLocale, locales } from "@/lib/i18n/config";
 

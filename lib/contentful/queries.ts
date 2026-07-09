@@ -13,8 +13,6 @@ import {
   type MediaImage,
 } from "./types";
 
-// `locale` is the Contentful locale code (e.g. "en-GB", "es"). When omitted,
-// Contentful returns the space's default locale.
 export async function getSettings(locale?: string): Promise<Settings | null> {
   return contentfulFetchOne<Settings>({
     content_type: "settings",

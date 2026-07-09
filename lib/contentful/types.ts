@@ -1,4 +1,3 @@
-// Image/Asset types
 export interface ContentfulAsset {
   sys: {
     id: string;
@@ -21,7 +20,6 @@ export interface ContentfulImage {
   };
 }
 
-// Content types
 export interface Kicker {
   sys: {
     id: string;
@@ -55,6 +53,7 @@ export interface Project {
     title: string;
     slug: string;
     excerpt: string;
+    dynamicIslandFrame?: boolean;
     heroImage?: {
       sys: {
         id: string;
@@ -91,10 +90,10 @@ export interface Project {
       };
     }>;
     role: string;
-    company: string;
+    company?: string;
     teamSize?: number;
     technologies?: string[];
-    challenges?: string[];
+    challenges?: string;
     contributions?: string[];
     outcome: string;
     links?: {

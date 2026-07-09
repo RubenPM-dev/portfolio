@@ -2,26 +2,15 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { LanguageSwitcher } from "@/components/common/language-switcher";
-import { ThemeToggle } from "@/components/common/theme-toggle";
+import { LanguageSwitcher } from "@/components/common/languageSwitcher";
+import { ThemeToggle } from "@/components/common/themeToggle";
 import type { Locale } from "@/lib/i18n/config";
 
 const NARROW_MAX_WIDTH = 1024;
 
-// Layout effect on the client (runs before paint), plain effect on the server
-// (avoids the SSR warning). Used to publish the header height before the first
-// paint so pages sizing off `--site-header-height` are correct immediately,
-// even after client-side navigation.
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-// Shared floating header used on every page. `left` is the page-specific
-// content (site title, or a back link); `children` are any extra controls
-// (e.g. the home nav links) placed alongside the language + theme controls.
-//
-// It publishes its own rendered height to the `--site-header-height` CSS
-// variable (kept in sync via ResizeObserver), so pages can offset content
-// relative to the header on any screen size.
 export function SiteHeader({
   locale,
   languageLabel,
@@ -36,7 +25,6 @@ export function SiteHeader({
   const ref = useRef<HTMLElement>(null);
   const [isNarrow, setIsNarrow] = useState(false);
 
-  // Narrow detection via matchMedia (drives which layout renders).
   useEffect(() => {
     const query = window.matchMedia(`(max-width: ${NARROW_MAX_WIDTH - 1}px)`);
     const updateNarrow = () => setIsNarrow(query.matches);
@@ -45,12 +33,6 @@ export function SiteHeader({
     return () => query.removeEventListener("change", updateNarrow);
   }, []);
 
-  // Publish the header height to `--site-header-height` BEFORE paint, and again
-  // whenever the layout switches (`isNarrow`), so pages that size off it (the
-  // phone showcase) are correct on the first frame. Critically this fixes
-  // client-side navigation: without a layout effect the variable would keep the
-  // previous page's (taller) header height until a post-paint effect corrected
-  // it. A ResizeObserver catches any later reflow (fonts, wrapping).
   useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) {

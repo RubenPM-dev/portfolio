@@ -11,29 +11,17 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import ScrollIndicator from "@/components/common/scrollIndicator";
-import { StoreBadges } from "@/components/common/store-badges";
+import { StoreBadges } from "@/components/common/storeBadges";
 import { Project } from "@/lib/contentful/types";
 
-// Scroll distance each screen occupies. Higher = slower overall.
 const VH_PER_SCREEN = 150;
 
-// Fraction of a screen's slot spent cross-fading; the rest is a full-opacity
-// hold. Smaller = longer hold, snappier fades.
 const FADE_FRACTION = 0.3;
 
-// The last screen has no screen after it, so it gets only a short hold (a
-// fraction of a normal band) before the section unpins — otherwise you'd scroll
-// a whole empty band of static phone at the end. Total scroll bands = (n-1)+TAIL.
 const TAIL = 0.5;
 
 const bandUnits = (count: number) => count - 1 + TAIL;
 
-// iOS-style push/pop between screens. Only the TOP screen slides; the other
-// stays full-screen and static underneath (just dimmed), so a complete image
-// always fills the frame — no black edge is ever exposed, in either direction.
-// Forward (dir >= 0): new screen slides in from the right over the old.
-// Backward (pop): current screen slides off to the right, revealing the previous.
 const SCREEN_VARIANTS = {
   enter: (dir: number) => ({
     x: dir >= 0 ? "100%" : "0%",
@@ -58,13 +46,11 @@ function defaultCaption(index: number): ShowcaseCaption {
   return { heading: `Feature ${index + 1}`, body: "" };
 }
 
-// Vertical distance a caption travels across the pinned area.
 const CAPTION_TRAVEL = "42vh";
 
 function captionSlot(index: number, count: number) {
   const units = bandUnits(count);
   const bandStart = index / units;
-  // The last band is only TAIL long; the rest are a full unit each.
   const bandEnd = (index < count - 1 ? index + 1 : count - 1 + TAIL) / units;
   const len = bandEnd - bandStart;
   const t1 = bandStart + FADE_FRACTION * len;
@@ -83,6 +69,7 @@ function Caption({
   side,
   progress,
   invert = false,
+  children,
 }: {
   caption: ShowcaseCaption;
   index: number;
@@ -90,11 +77,10 @@ function Caption({
   side: "left" | "right";
   progress: MotionValue<number>;
   invert?: boolean;
+  children?: ReactNode;
 }) {
   const { range, opacity: opacityOut, y: yOut } = captionSlot(index, count);
   const opacity = useTransform(progress, range, opacityOut);
-  // Travels top -> centre (hold) -> bottom with scroll; `invert` reverses it
-  // (bottom -> centre -> top) so the text moves upward as you scroll down.
   const y = useTransform(progress, range, invert ? [...yOut].reverse() : yOut);
 
   return (
@@ -105,18 +91,54 @@ function Caption({
       }`}
     >
       <div className="max-w-xs">
-        <p className="kicker mb-3">{caption.heading}</p>
-        <p className="text-sm leading-7 text-muted">{caption.body}</p>
+        {children ?? (
+          <>
+            <p className="kicker mb-3">{caption.heading}</p>
+            <p className="text-sm leading-7">{caption.body}</p>
+          </>
+        )}
       </div>
     </motion.div>
   );
 }
 
-function PhoneFrame({ children }: { children: React.ReactNode }) {
+export type PhoneVariant = "island" | "notch" | "none";
+
+function PhoneFrame({
+  children,
+  variant = "island",
+  compact = false,
+}: {
+  children: React.ReactNode;
+  variant?: PhoneVariant;
+  compact?: boolean;
+}) {
+  if (variant === "none") {
+    return (
+      <div
+        className={
+          compact ? "phone-bare phone-bare--sm relative" : "phone-bare relative"
+        }
+      >
+        {children}
+      </div>
+    );
+  }
+  const isNotch = variant === "notch";
+  const frameClass = isNotch ? "phone-frame phone-frame--notch" : "phone-frame";
   return (
-    <div className="phone-frame">
-      <span className="phone-island" aria-hidden="true" />
-      <div className="phone-screen">{children}</div>
+    <div
+      className={
+        compact
+          ? `${frameClass} phone-frame--sm relative`
+          : `${frameClass} relative`
+      }
+    >
+      <span
+        className={isNotch ? "phone-notch" : "phone-island"}
+        aria-hidden="true"
+      />
+      <div className="phone-screen relative">{children}</div>
     </div>
   );
 }
@@ -134,16 +156,148 @@ export function PhoneShowcase({
   alt?: string;
   project?: Project;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const phoneVariant: PhoneVariant =
+    project?.fields.dynamicIslandFrame == null
+      ? "none"
+      : project.fields.dynamicIslandFrame === true
+        ? "island"
+        : "notch";
+
+  if (!screens.length) {
+    return null;
+  }
+
+  const captionFor = (index: number) => {
+    const caption = captions?.[index] ?? defaultCaption(index);
+    return caption;
+  };
+  const animate = !reduceMotion && screens.length > 1;
+
+  if (!animate) {
+    if (screens.length === 1) {
+      const f0 = captions?.[0];
+      const f1 = captions?.[1];
+      const hasF0 = Boolean(f0 && (f0.heading || f0.body));
+      const hasF1 = Boolean(f1 && (f1.heading || f1.body));
+      const captionBlock = (c: ShowcaseCaption) => (
+        <div>
+          <p className="kicker mb-3">{c.heading}</p>
+          <p className="text-sm leading-7 text-muted">{c.body}</p>
+        </div>
+      );
+
+      return (
+        <div 
+        style={{ paddingTop: "calc(var(--site-header-height, 5rem) + 3rem)", paddingBottom: "calc(var(--site-header-height, 5rem) + 3rem)" }}
+        className="grid-shell grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 pb-16 lg:grid-cols-[1fr_auto_1fr] lg:gap-10">
+          <div className="hidden max-w-sm lg:block lg:justify-self-end lg:text-right">
+            {header}
+          </div>
+
+          {phoneVariant === "none" ? (
+            <img
+              src={`${screens[0]}?w=680&fm=webp&q=80`}
+              alt={`${alt} 1`}
+              style={{ maxWidth: "40vw" }}
+              className="h-auto w-[40vw] shrink-0 rounded-[var(--radius)] lg:h-[340px] lg:w-auto"
+            />
+          ) : (
+            <PhoneFrame variant={phoneVariant} compact>
+              <Image
+                src={screens[0]}
+                alt={`${alt} 1`}
+                priority
+                fill
+                sizes="(max-width: 768px) 40vw, 340px"
+                className="object-cover border-1"
+              />
+            </PhoneFrame>
+          )}
+
+          <div className="max-w-sm">
+            <div className="space-y-4 lg:hidden">
+              {header}
+              {hasF0 ? captionBlock(f0!) : null}
+              {hasF1 ? captionBlock(f1!) : null}
+            </div>
+            <div className="hidden lg:block">
+              {hasF0 ? captionBlock(f0!) : null}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid-shell flex flex-wrap justify-center gap-10 pb-16 pt-[calc(var(--site-header-height,5rem)+2rem)]">
+        {screens.map((src, index) => {
+          const caption = captionFor(index);
+          return (
+            <div key={index} className="w-64 max-w-full">
+              <PhoneFrame variant={phoneVariant} compact>
+                <Image
+                  src={src}
+                  alt={`${alt} ${index + 1}`}
+                  fill
+                  sizes="240px"
+                  className="object-cover"
+                />
+              </PhoneFrame>
+              {index === 0 && header ? (
+                <div className="mt-5">{header}</div>
+              ) : (
+                <>
+                  <p className="kicker mt-5">{caption.heading}</p>
+                  <p className="mt-2 text-sm leading-7 text-muted">
+                    {caption.body}
+                  </p>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <AnimatedShowcase
+      screens={screens}
+      captions={captions}
+      header={header}
+      alt={alt}
+      project={project}
+      phoneVariant={phoneVariant}
+    />
+  );
+}
+
+function AnimatedShowcase({
+  screens,
+  captions,
+  header,
+  alt,
+  project,
+  phoneVariant,
+}: {
+  screens: string[];
+  captions?: ShowcaseCaption[];
+  header?: ReactNode;
+  alt: string;
+  project?: Project;
+  phoneVariant: PhoneVariant;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
-
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
   const activeRef = useRef(0);
+  const captionFor = (index: number) =>
+    captions?.[index] ?? defaultCaption(index);
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     const count = screens.length;
     if (!count) {
@@ -164,45 +318,6 @@ export function PhoneShowcase({
       setActive(next);
     }
   });
-
-  if (!screens.length) {
-    return null;
-  }
-
-  const captionFor = (index: number) => {
-    const caption = captions?.[index] ?? defaultCaption(index);
-    return caption;
-  };
-  const animate = !reduceMotion && screens.length > 1;
-
-  // Static fallback (reduced motion, or a single screen): framed screens with
-  // their captions in a simple centered grid.
-  if (!animate) {
-    return (
-      <div className="grid-shell flex flex-wrap justify-center gap-10">
-        {screens.map((src, index) => {
-          const caption = captionFor(index);
-          return (
-            <div key={index} className="w-64 max-w-full">
-              <PhoneFrame>
-                <Image
-                  src={src}
-                  alt={`${alt} ${index + 1}`}
-                  fill
-                  sizes="240px"
-                  className="object-cover"
-                />
-              </PhoneFrame>
-              <p className="kicker mt-5">{caption.heading}</p>
-              <p className="mt-2 text-sm leading-7 text-muted">
-                {caption.body}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
 
   return (
     <div
@@ -234,12 +349,7 @@ export function PhoneShowcase({
           height: "calc(100dvh - var(--site-header-height, 5rem) - 0.5rem)",
         }}
       >
-        {header ? (
-          <div className="flex w-full justify-center pt-2">{header}</div>
-        ) : null}
-
         <div className="grid-shell grid min-h-0 flex-1 grid-cols-[auto_minmax(0,1fr)] items-center gap-5 lg:grid-cols-[1fr_auto_1fr] lg:gap-10">
-          {/* Desktop-only left column: even-indexed captions + the pre-scroll cue. */}
           <div className="relative hidden lg:block">
             {screens.map((_, index) =>
               index % 2 === 0 ? (
@@ -250,13 +360,15 @@ export function PhoneShowcase({
                   count={screens.length}
                   side="left"
                   progress={scrollYProgress}
-                />
+                >
+                  {index === 0 ? header : undefined}
+                </Caption>
               ) : null,
             )}
           </div>
 
           <div className="flex flex-col items-start lg:mx-auto lg:items-center">
-            <PhoneFrame>
+            <PhoneFrame variant={phoneVariant}>
               <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                   key={active}
@@ -289,8 +401,6 @@ export function PhoneShowcase({
             ) : null}
           </div>
 
-          {/* Right column. Mobile: ALL captions on this single side next to the
-              phone. Desktop: only the odd-indexed captions (the evens sit left). */}
           <div className="relative">
             <div className="lg:hidden">
               {screens.map((_, index) => (
@@ -302,7 +412,9 @@ export function PhoneShowcase({
                   side="right"
                   progress={scrollYProgress}
                   invert
-                />
+                >
+                  {index === 0 ? header : undefined}
+                </Caption>
               ))}
             </div>
             <div className="hidden lg:block">

@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 
 import { notFound } from "next/navigation";
 
-import { SiteHeader } from "@/components/common/site-header";
-import { fallbackSettings } from "@/lib/site-config";
+import { SiteHeader } from "@/components/common/siteHeader";
+import { fallbackSettings } from "@/lib/siteConfig";
 import { getSettings } from "@/lib/contentful/queries";
 import { contentfulLocale, defaultLocale, isLocale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getDictionary } from "@/lib/i18n/getDictionary";
 import IntroSection from "@/components/homePage/introSection";
 import ProjectsSection from "@/components/homePage/projectsSection";
 import ExperienceSection from "@/components/homePage/experienceSection";
 import SkillsSection from "@/components/homePage/skillsSection";
 import ContactForm from "@/components/common/contactForm";
 import Footer from "@/components/common/footer";
+import { BackToTop } from "@/components/common/backToTop";
 import { SectionTracker } from "@/components/analytics/section-tracker";
 
 export const revalidate = 120;
@@ -50,7 +51,7 @@ export default async function Home({ params }: Props) {
         locale={lang}
         languageLabel={dict.language.label}
         left={
-          <p className="text-xs uppercase tracking-[0.13em] text-muted p-4">{mergedSettings.siteTitle}</p>
+          <p className="text-xs uppercase tracking-[0.13em] text-muted p-2">{mergedSettings.siteTitle}</p>
         }
       >
         <a href="#work" className="focus-ring text-xs font-bold">{dict.nav.work}</a>
@@ -69,6 +70,7 @@ export default async function Home({ params }: Props) {
         <ContactForm lang={lang} />
       </div>
       <Footer lang={lang} />
+      <BackToTop />
       <SectionTracker />
     </main>
   );

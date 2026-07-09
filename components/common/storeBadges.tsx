@@ -5,9 +5,6 @@ import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 
-// Localized accessible labels. The badge artwork (SVG) also carries this text
-// baked in, so the matching /badges/{app-store,google-play}-<lang>.svg files
-// must be the official localized badges for each language.
 const LABELS: Record<Locale, { appStore: string; googlePlay: string }> = {
   en: { appStore: "Download on the App Store", googlePlay: "Get it on Google Play" },
   es: { appStore: "Descárgalo en el App Store", googlePlay: "Disponible en Google Play" },

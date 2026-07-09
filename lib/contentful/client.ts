@@ -10,7 +10,7 @@ if (hasCFConfig) {
   client = createClient({
     space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID!,
     accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN!,
-    host: "cdn.contentful.com", // Use preview API for drafts if needed
+    host: "cdn.contentful.com",
   });
 }
 
@@ -19,18 +19,12 @@ interface ContentfulErrorInfo {
   details?: { errors?: Array<{ name?: string; value?: string; path?: string[] }> };
 }
 
-// A query for a content type that isn't in the space yet (e.g. a singleton
-// authored later). Expected during setup — degrade to the fallback quietly
-// rather than logging a scary error.
 function isUnknownContentType(info: ContentfulErrorInfo): boolean {
   return Boolean(
     info.details?.errors?.some((entry) => entry.name === "unknownContentType"),
   );
 }
 
-// contentful.js (v11) throws an Error whose `message` is a JSON string holding
-// `status`/`details`/etc. — they are NOT exposed as top-level properties. Older
-// shapes do expose them directly, so support both.
 function parseContentfulError(error: unknown): ContentfulErrorInfo {
   const maybeError = error as ContentfulErrorInfo & { message?: string };
 
@@ -42,7 +36,6 @@ function parseContentfulError(error: unknown): ContentfulErrorInfo {
     try {
       return JSON.parse(maybeError.message) as ContentfulErrorInfo;
     } catch {
-      // message wasn't JSON — fall through
     }
   }
 

@@ -9,19 +9,26 @@ export default function HeroImageSection({ project }: { project: Project }) {
     : null;
 
   return (
-    <section className="grid-shell max-w-[800px]">
-      <div className="mt-10 overflow-hidden rounded-[var(--radius)] border border-line">
-        {hero && (
-          <Image
-            src={hero}
-            alt={project.fields.heroImage?.fields?.title || project.fields.title}
-            width={4400}
-            height={2400}
-            className="h-auto max-w-[800px]"
-            priority
-          />
-        )}
-      </div>
-    </section>
+    <>
+      {hero ? (
+        <section className="grid-shell max-w-[800px] sm:pt-[calc(var(--site-header-height,5rem)+6rem)]">
+          <div className="mt-10 overflow-hidden rounded-[var(--radius)]">
+            {hero && (
+              <Image
+                src={hero}
+                alt={
+                  project.fields.heroImage?.fields?.title ||
+                  project.fields.title
+                }
+                width={4400}
+                height={2400}
+                className="h-auto max-w-[800px]"
+                priority
+              />
+            )}
+          </div>
+        </section>
+      ) : null}
+    </>
   );
 }

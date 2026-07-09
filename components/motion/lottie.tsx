@@ -20,10 +20,7 @@ export function Lottie({
   src: string;
   className?: string;
   loop?: boolean;
-  // Playback rate: 1 = normal, 0.5 = half speed, 2 = double.
   speed?: number;
-  // For grayscale animations: flip black<->white in the dark theme via a CSS
-  // filter (see `.lottie-invert-dark` in globals.css).
   invertOnDark?: boolean;
 }) {
   const reduceMotion = useReducedMotion();

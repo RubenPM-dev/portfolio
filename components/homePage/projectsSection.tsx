@@ -6,29 +6,43 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getProjects } from "@/lib/contentful/queries";
 import { getImageUrl } from "@/lib/contentful/image";
 import { contentfulLocale, type Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { fallbackProjects } from "@/lib/site-config";
+import { getDictionary } from "@/lib/i18n/getDictionary";
+import { fallbackProjects } from "@/lib/siteConfig";
 
-export default async function ProjectsSection({ lang }: { lang: Locale }) {
+export default async function ProjectsSection({
+  lang,
+  excludeSlug,
+}: {
+  lang: Locale;
+  excludeSlug?: string;
+}) {
   const dict = getDictionary(lang);
   const projects = await getProjects(contentfulLocale[lang]);
-  const mergedProjects = projects.length ? projects : fallbackProjects;
+  const allProjects = projects.length ? projects : fallbackProjects;
+  const mergedProjects = excludeSlug
+    ? allProjects.filter((project) => project.fields.slug !== excludeSlug)
+    : allProjects;
+
+  if (!mergedProjects.length) {
+    return null;
+  }
 
   return (
     <section
       id="work"
-      className="hairline max-sm:pt-6 max-sm:pb-4 sm:pt-[calc(var(--site-header-height,5rem)+1rem)] sm:pb-4"
+      className="max-sm:pt-6 max-sm:pb-4 sm:pt-[calc(var(--site-header-height,5rem)+6rem)] sm:pb-[calc(var(--site-header-height,5rem)+6rem)]"
     >
-      <div className="grid-shell">
+      <div className="grid-shell text-center">
         <Reveal>
           <p className="kicker">{dict.sections.workKicker}</p>
           <h2 className="section-heading mt-4 max-w-3xl mx-auto text-balance">
-            {dict.sections.workHeading}
+            {excludeSlug ? dict.sections.otherWorkeHeading : dict.sections.workHeading}
           </h2>
         </Reveal>
+      </div>
 
-        <div className="mt-4 max-sm:mt-6">
-          <ProjectsCarousel dotLabel={dict.projectCard.goToProject}>
+      <div className="mt-4 max-sm:mt-6">
+        <ProjectsCarousel dotLabel={dict.projectCard.goToProject}>
             {mergedProjects.map((project, _) => {
               const projectImage = project.fields.heroSmall
                 ? getImageUrl(project.fields.heroSmall)
@@ -40,10 +54,10 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                   href={`/${lang}/work/${project.fields.slug}`}
                   slug={project.fields.slug}
                   ariaLabel={`${dict.projectCard.cta}: ${project.fields.title}`}
-                  className="carousel-item carousel-item-fill w-[85vw] max-w-[26rem] sm:w-[32rem] sm:max-w-[32rem]"
+                  className="carousel-item carousel-item-fill w-[85vw] max-w-[26rem] sm:aspect-[16/21] sm:w-auto sm:max-w-none"
                 >
-                  <Card className="floating-card flex h-full flex-1 flex-col overflow-hidden bg-surface">
-                    <div className="relative aspect-[16/9] w-full shrink-0 sm:max-h-[50%]">
+                  <Card className="floating-card flex h-full flex-1 flex-col overflow-hidden">
+                    <div className="relative aspect-[16/9] w-full shrink-0">
                       {projectImage ? (
                         <Image
                           src={projectImage}
@@ -70,7 +84,7 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
                       <h3 className="text-2xl leading-tight">
                         {project.fields.title}
                       </h3>
-                      <p className="line-clamp-3 text-sm leading-6 text-muted">
+                      <p className="text-sm leading-6 text-muted">
                         {project.fields.excerpt}
                       </p>
                       <span className="mt-auto inline-flex shrink-0 items-center justify-center rounded-full bg-zinc-100 px-4 py-2 text-xs font-medium text-zinc-900">
@@ -82,7 +96,6 @@ export default async function ProjectsSection({ lang }: { lang: Locale }) {
               );
             })}
           </ProjectsCarousel>
-        </div>
       </div>
     </section>
   );

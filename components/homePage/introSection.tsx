@@ -3,7 +3,7 @@ import { Lottie } from "@/components/motion/lottie";
 import { Button } from "@/components/ui/button";
 import { getKicker } from "@/lib/contentful/queries";
 import { contentfulLocale, type Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getDictionary } from "@/lib/i18n/getDictionary";
 import ScrollIndicator from "../common/scrollIndicator";
 
 export default async function IntroSection({ lang }: { lang: Locale }) {
@@ -26,7 +26,7 @@ export default async function IntroSection({ lang }: { lang: Locale }) {
           <h1 className="text-balance text-[clamp(2rem,6vw,4rem)] leading-[0.94]">
             {headline}
           </h1>
-          <p className="mt-7 max-w-xl text-base text-center leading-8 text-muted sm:text-lg">
+          <p className="mt-7 max-w-xl lg:max-w-3xl text-base text-center leading-8 text-muted md:text-xxl">
             {subhead}
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-8 max-sm:mt-16 max-sm:gap-4">

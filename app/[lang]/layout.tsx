@@ -3,8 +3,8 @@ import { Manrope, Newsreader } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { Analytics } from "@vercel/analytics/next";
-import { BeamField } from "@/components/motion/beam-field";
-import { siteBaseUrl } from "@/lib/site-config";
+import { BeamField } from "@/components/motion/beamField";
+import { siteBaseUrl } from "@/lib/siteConfig";
 import { isLocale, locales } from "@/lib/i18n/config";
 
 export function generateStaticParams() {

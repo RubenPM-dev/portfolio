@@ -166,9 +166,14 @@ h4 {
 }
 
 .marquee {
-  overflow: hidden;
-  /* Vertical room so a chip's hover lift isn't clipped by overflow:hidden. */
+  /* Horizontal scroll container: auto-scrolled by JS, and grab/swipe to take
+     over manually. Vertical padding keeps a chip's hover lift from clipping. */
+  overflow-x: auto;
+  overflow-y: hidden;
   padding-block: 0.5rem;
+  scrollbar-width: none;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent,
@@ -185,35 +190,20 @@ h4 {
   );
 }
 
+.marquee::-webkit-scrollbar {
+  display: none;
+}
+
 .marquee-track {
   display: flex;
   width: max-content;
   gap: 0.75rem;
-  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
-}
-
-.marquee-track--reverse {
-  animation-direction: reverse;
-}
-
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-@keyframes marquee-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 .skill-chip {
   display: inline-flex;
   align-items: baseline;
   white-space: nowrap;
-  cursor: pointer;
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.5rem 1.1rem;
@@ -227,12 +217,6 @@ h4 {
 .skill-chip:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
 }
 
 .glass-surface {

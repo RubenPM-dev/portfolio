@@ -14,7 +14,7 @@ This is the reference for every content type the portfolio consumes. For each se
 | --- | --- | --- |
 | `string` (short) | **Symbol** | Single line, ≤256 chars (title, slug, role…) |
 | `string` (long) | **Text** | Multi-line / long form (summary, story…) |
-| `number` | **Integer** / **Number** | `teamSize`, `featuredOrder`, `year`, skill `level` |
+| `number` | **Integer** / **Number** | `teamSize`, `featuredOrder`, `year` |
 | `string[]` | **Array of Symbol** | tags, highlights, challenges… |
 | nested object / object[] | **JSON object** | `groups`, `journey`, `links`, `socialLinks` (see note below) |
 | image | **Media → Link to Asset** | `heroImage`, `portrait`, `image`… |

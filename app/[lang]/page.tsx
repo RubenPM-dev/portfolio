@@ -51,7 +51,7 @@ export default async function Home({ params }: Props) {
         locale={lang}
         languageLabel={dict.language.label}
         left={
-          <p className="text-xs uppercase tracking-[0.13em] text-muted p-2">{mergedSettings.siteTitle}</p>
+          <p className="text-xs uppercase tracking-[0.13em] text-muted pb-2 pr-2 pt-2">{mergedSettings.siteTitle}</p>
         }
       >
         <a href="#work" className="focus-ring text-xs font-bold">{dict.nav.work}</a>

@@ -147,27 +147,35 @@ export const fallbackSkills: Skills = {
       "A systems view of strengths across product engineering, architecture, and reliable delivery.",
     groups: [
       {
+        title: "Languages & Platforms",
+        items: [
+          { name: "Swift 6 / SwiftUI", note: "UIKit interop" },
+          { name: "React Native", note: "iOS + Android" },
+          { name: "WebView ↔ native bridging", note: "OAuth / PKCE, typed messaging" },
+        ],
+      },
+      {
         title: "Realtime & Concurrency",
         items: [
-          { name: "Actor-based architecture", level: 5, note: "Swift 6 strict concurrency" },
-          { name: "Live state reconciliation", level: 5, note: "Optimistic UI + rollback" },
-          { name: "SignalR / Ably integration", level: 4 },
+          { name: "Actor-based architecture", note: "Swift 6 strict concurrency" },
+          { name: "Live state reconciliation", note: "Optimistic UI + rollback" },
+          { name: "SignalR / Ably integration", note: "Real-time messaging" },
         ],
       },
       {
         title: "Architecture & Quality",
         items: [
-          { name: "Modular CLEAN architecture", level: 5 },
-          { name: "MVVM + coordinator patterns", level: 5 },
-          { name: "XCTest and contract testing", level: 4 },
+          { name: "Modular CLEAN architecture" },
+          { name: "MVVM + coordinator patterns" },
+          { name: "XCTest & contract testing", note: "Instruments profiling" },
         ],
       },
       {
         title: "Product Delivery",
         items: [
-          { name: "Release ownership", level: 5 },
-          { name: "Analytics instrumentation", level: 4 },
-          { name: "Cross-functional collaboration", level: 5 },
+          { name: "Release ownership", note: "~75% on a two-week cadence" },
+          { name: "Analytics instrumentation" },
+          { name: "Cross-functional collaboration" },
         ],
       },
     ],

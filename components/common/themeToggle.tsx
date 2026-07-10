@@ -7,43 +7,29 @@ type Theme = "light" | "dark";
 
 const storageKey = "rp-theme";
 
-function getSystemTheme(): Theme {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme | null>(null);
+  // Defaults to dark regardless of the system setting; a saved toggle wins.
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const sync = () => {
-      const saved = window.localStorage.getItem(storageKey);
-      if (saved === "light" || saved === "dark") {
-        document.documentElement.dataset.theme = saved;
-        document.documentElement.style.colorScheme = saved;
-        setTheme(saved);
-      } else {
-        delete document.documentElement.dataset.theme;
-        document.documentElement.style.removeProperty("color-scheme");
-        setTheme(media.matches ? "dark" : "light");
-      }
-    };
-
-    sync();
-    media.addEventListener("change", sync);
-    return () => media.removeEventListener("change", sync);
+    const saved = window.localStorage.getItem(storageKey);
+    const initial: Theme =
+      saved === "light" || saved === "dark" ? saved : "dark";
+    setTheme(initial);
+    applyTheme(initial);
   }, []);
 
   const toggleTheme = () => {
-    const next: Theme = (theme ?? getSystemTheme()) === "light" ? "dark" : "light";
+    const next: Theme = theme === "light" ? "dark" : "light";
     track("button_click", { id: "theme_toggle", theme: next });
 
     window.localStorage.setItem(storageKey, next);
-    document.documentElement.dataset.theme = next;
-    document.documentElement.style.colorScheme = next;
+    applyTheme(next);
     setTheme(next);
   };
 

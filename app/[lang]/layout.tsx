@@ -78,6 +78,11 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground" suppressHydrationWarning>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('rp-theme');var t=(s==='light'||s==='dark')?s:'dark';var e=document.documentElement;e.dataset.theme=t;e.style.colorScheme=t;}catch(_){document.documentElement.dataset.theme='dark';document.documentElement.style.colorScheme='dark';}})();`,
+          }}
+        />
         <BeamField />
         <div className="relative z-10">{children}</div>
         <Analytics />

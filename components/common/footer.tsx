@@ -13,7 +13,7 @@ export default async function Footer({ id, lang }: { id?: string; lang: Locale }
           {settingsFields.siteTitle}
         </p>
         <div className="flex gap-5">
-          {(settingsFields.socialLinks || []).map((link: any) => (
+          {(settingsFields.socialLinks || []).map((link: { url: string; label: string }) => (
             <a
               key={link.url}
               href={link.url}

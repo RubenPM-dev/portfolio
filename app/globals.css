@@ -140,8 +140,8 @@ h4 {
 }
 
 .section-heading {
-  font-size: clamp(0.5rem, 2vw, 2rem);
-  line-height: 1.03;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.1;
 }
 
 .editorial-grid {
@@ -163,6 +163,76 @@ h4 {
 
 .hairline {
   border-top: 1px solid var(--line);
+}
+
+.marquee {
+  overflow: hidden;
+  /* Vertical room so a chip's hover lift isn't clipped by overflow:hidden. */
+  padding-block: 0.5rem;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee-track--reverse {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+  background-color: color-mix(in oklab, var(--surface) 55%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.skill-chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }
 
 .glass-surface {

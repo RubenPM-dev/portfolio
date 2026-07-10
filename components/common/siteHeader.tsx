@@ -63,7 +63,7 @@ export function SiteHeader({
     <div className="flex w-full items-center justify-between gap-x-4 gap-y-0">
       <div className="m-2 flex items-center whitespace-nowrap">{left}</div>
       <div className="flex-grow" />
-      <div className="flex flex-row whitespace-nowrap justify-around gap-x-4">
+      <div className="flex flex-row whitespace-nowrap justify-around gap-x-6">
         {children}
       </div>
       <LanguageSwitcher locale={locale} label={languageLabel} />
@@ -78,7 +78,7 @@ export function SiteHeader({
         {pageSettings}
       </div>
       {children ? (
-        <div className="flex w-full justify-center gap-x-6 pt-1">{children}</div>
+        <div className="flex w-full justify-between gap-x-6 pt-2">{children}</div>
       ) : null}
     </div>
   );

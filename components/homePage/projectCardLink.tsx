@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 import type { ReactNode } from "react";
 
 export function ProjectCardLink({
@@ -22,7 +22,7 @@ export function ProjectCardLink({
       href={href}
       aria-label={ariaLabel}
       className={className}
-      onClick={() => track("button_click", { id: "view_project", project: slug })}
+      onClick={() => trackEvent("button_click", { id: "view_project", project: slug })}
     >
       {children}
     </Link>

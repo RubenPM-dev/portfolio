@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 export function BackToTop({ threshold = 0.6 }: { threshold?: number }) {
   const [visible, setVisible] = useState(false);
@@ -24,7 +24,7 @@ export function BackToTop({ threshold = 0.6 }: { threshold?: number }) {
   }, [threshold]);
 
   const scrollToTop = () => {
-    track("button_click", { id: "back_to_top" });
+    trackEvent("button_click", { id: "back_to_top" });
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   };

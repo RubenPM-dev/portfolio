@@ -1,10 +1,12 @@
 import { getSettings } from "@/lib/contentful/queries";
 import { contentfulLocale, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/getDictionary";
 import { fallbackSettings } from "@/lib/siteConfig";
 
 export default async function Footer({ id, lang }: { id?: string; lang: Locale }) {
   const settings = await getSettings(contentfulLocale[lang]);
   const settingsFields = settings?.fields || fallbackSettings.fields;
+  const dict = getDictionary(lang);
 
   return (
     <footer id={id} className="hairline mt-8">
@@ -24,6 +26,13 @@ export default async function Footer({ id, lang }: { id?: string; lang: Locale }
               {link.label}
             </a>
           ))}
+          <button
+            type="button"
+            data-cc="show-preferencesModal"
+            className="focus-ring rounded-sm text-left hover:text-ink"
+          >
+            {dict.cookies.settings}
+          </button>
         </div>
       </div>
     </footer>

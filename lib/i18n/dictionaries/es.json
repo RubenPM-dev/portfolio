@@ -62,5 +62,30 @@
   },
   "language": {
     "label": "Idioma"
+  },
+  "cookies": {
+    "settings": "Configuración de cookies",
+    "consentModal": {
+      "title": "Valoramos tu privacidad",
+      "description": "Este sitio usa analítica sin cookies y respetuosa con la privacidad de forma predeterminada. Con tu consentimiento, también usa Mixpanel, que almacena datos en tu dispositivo, para entender cómo se utiliza la web. Puedes aceptar, rechazar o gestionar tu elección en cualquier momento.",
+      "acceptAllBtn": "Aceptar todo",
+      "rejectAllBtn": "Rechazar todo",
+      "showPreferencesBtn": "Gestionar preferencias"
+    },
+    "preferencesModal": {
+      "title": "Preferencias de cookies",
+      "acceptAllBtn": "Aceptar todo",
+      "rejectAllBtn": "Rechazar todo",
+      "savePreferencesBtn": "Guardar preferencias",
+      "closeIconLabel": "Cerrar",
+      "necessary": {
+        "title": "Estrictamente necesarias",
+        "description": "Imprescindibles para que el sitio funcione. Están siempre activas y no se pueden desactivar."
+      },
+      "analytics": {
+        "title": "Analítica",
+        "description": "Mixpanel nos ayuda a entender cómo usan la web los visitantes para poder mejorarla. Solo se activa con tu consentimiento."
+      }
+    }
   }
 }

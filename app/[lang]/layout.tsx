@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { CookieConsentBanner } from "@/components/analytics/cookieConsent";
 import { BeamField } from "@/components/motion/beamField";
 import { siteBaseUrl } from "@/lib/siteConfig";
 import { isLocale, locales } from "@/lib/i18n/config";
@@ -88,6 +89,7 @@ export default async function RootLayout({
         <div className="relative z-10">{children}</div>
         <Analytics />
         <SpeedInsights />
+        <CookieConsentBanner />
       </body>
     </html>
   );

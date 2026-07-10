@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 export function SectionTracker() {
   useEffect(() => {
@@ -21,7 +21,7 @@ export function SectionTracker() {
             continue;
           }
           seen.add(id);
-          track("section_view", { section: id });
+          trackEvent("section_view", { section: id });
           observer.unobserve(entry.target);
         }
       },

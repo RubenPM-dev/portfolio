@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 type Theme = "light" | "dark";
 
@@ -26,7 +26,7 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     const next: Theme = theme === "light" ? "dark" : "light";
-    track("button_click", { id: "theme_toggle", theme: next });
+    trackEvent("button_click", { id: "theme_toggle", theme: next });
 
     window.localStorage.setItem(storageKey, next);
     applyTheme(next);

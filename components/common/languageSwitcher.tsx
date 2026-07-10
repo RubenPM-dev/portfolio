@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { track } from "@vercel/analytics";
-
 import { locales, localeLabels, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 const localeNames: Record<Locale, string> = { en: "English", es: "Spanish" };
 
@@ -31,7 +30,7 @@ export function LanguageSwitcher({
       return;
     }
     setSelected(next);
-    track("button_click", { id: "language_switch", locale: next });
+    trackEvent("button_click", { id: "language_switch", locale: next });
 
     const segments = pathname.split("/");
     segments[1] = next;

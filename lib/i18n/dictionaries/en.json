@@ -62,5 +62,30 @@
   },
   "language": {
     "label": "Language"
+  },
+  "cookies": {
+    "settings": "Cookie settings",
+    "consentModal": {
+      "title": "We value your privacy",
+      "description": "This site uses privacy-friendly, cookieless analytics by default. With your consent, it also uses Mixpanel, which stores data on your device, to understand how the site is used. You can accept, reject, or manage your choice at any time.",
+      "acceptAllBtn": "Accept all",
+      "rejectAllBtn": "Reject all",
+      "showPreferencesBtn": "Manage preferences"
+    },
+    "preferencesModal": {
+      "title": "Cookie preferences",
+      "acceptAllBtn": "Accept all",
+      "rejectAllBtn": "Reject all",
+      "savePreferencesBtn": "Save preferences",
+      "closeIconLabel": "Close",
+      "necessary": {
+        "title": "Strictly necessary",
+        "description": "Required for the site to work. These are always on and cannot be turned off."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Mixpanel helps us understand how visitors use the site so it can be improved. Enabled only with your consent."
+      }
+    }
   }
 }

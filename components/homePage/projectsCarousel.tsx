@@ -8,9 +8,8 @@ import {
   type PointerEvent,
   type ReactNode,
 } from "react";
-import { track } from "@vercel/analytics";
-
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 const DRAG_THRESHOLD = 5;
 
@@ -157,7 +156,7 @@ export function ProjectsCarousel({
               key={index}
               type="button"
               onClick={() => {
-                track("button_click", { id: "carousel_dot", index: index + 1 });
+                trackEvent("button_click", { id: "carousel_dot", index: index + 1 });
                 goTo(index);
               }}
               aria-label={`${dotLabel} ${index + 1}`}

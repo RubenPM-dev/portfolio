@@ -1,6 +1,5 @@
 import type { AnalyticsEventName, AnalyticsProps, AnalyticsProvider } from "./types";
 
-/** Run a side effect, swallowing errors so one provider can't break the others. */
 function safe(label: string, fn: () => void) {
   try {
     fn();
@@ -10,17 +9,10 @@ function safe(label: string, fn: () => void) {
   }
 }
 
-/**
- * Fans a single call out to every wrapped provider. This is what lets the app
- * run Vercel + Mixpanel at once without any
- * consumer knowing more than one provider exists.
- */
 export function createCompositeProvider(providers: AnalyticsProvider[]): AnalyticsProvider {
   return {
     name: `composite(${providers.map((p) => p.name).join(",") || "none"})`,
     async init() {
-      // allSettled: a failing SDK (missing key, blocked by an ad blocker)
-      // must not prevent the others from initializing.
       await Promise.allSettled(providers.map((p) => Promise.resolve(p.init())));
     },
     track(name: AnalyticsEventName, props?: AnalyticsProps) {

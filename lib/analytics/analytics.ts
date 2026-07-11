@@ -2,21 +2,6 @@ import { buildAnalytics } from "./compositionRoot";
 import { createNoopProvider } from "./providers/noopProvider";
 import type { AnalyticsEvent, AnalyticsEventName, AnalyticsProps, AnalyticsProvider } from "./types";
 
-/**
- * The facade views consume. It owns two provider groups from the composition
- * root:
- *
- *   - `alwaysOn`     cookieless providers (Vercel), booted immediately.
- *   - `consentGated` providers that require "analytics" consent (Mixpanel),
- *                    dormant until `setAnalyticsConsent(true)` is called by the
- *                    cookie banner.
- *
- * A small pre-boot buffer holds events fired before `initAnalytics` resolves and
- * flushes them once the always-on group is ready. Consent-gated providers only
- * ever receive events that occur AFTER consent is granted; nothing from before
- * consent is replayed to them.
- */
-
 let alwaysOn: AnalyticsProvider = createNoopProvider();
 let consentGated: AnalyticsProvider = createNoopProvider();
 
@@ -32,11 +17,6 @@ function dispatch(event: AnalyticsEvent) {
   }
 }
 
-/**
- * Boot analytics once, on the client. Called from `instrumentation-client.ts`.
- * Only the cookieless (always-on) group starts here; consent-gated providers
- * wait for `setAnalyticsConsent`. Safe to call multiple times (HMR).
- */
 export async function initAnalytics(): Promise<void> {
   if (started || typeof window === "undefined") {
     return;
@@ -53,11 +33,6 @@ export async function initAnalytics(): Promise<void> {
   buffer.length = 0;
 }
 
-/**
- * Grant or withdraw consent for the "analytics" category. Driven by the cookie
- * banner. Granting boots the consent-gated providers (once); withdrawing resets
- * them and stops further delivery.
- */
 export async function setAnalyticsConsent(granted: boolean): Promise<void> {
   if (granted && !consentActive) {
     await consentGated.init();
@@ -68,7 +43,6 @@ export async function setAnalyticsConsent(granted: boolean): Promise<void> {
   }
 }
 
-/** Record a custom event. Buffered until the always-on group is ready. */
 export function trackEvent(name: AnalyticsEventName, props?: AnalyticsProps): void {
   if (!booted) {
     buffer.push({ name, props });
@@ -77,7 +51,6 @@ export function trackEvent(name: AnalyticsEventName, props?: AnalyticsProps): vo
   dispatch({ name, props });
 }
 
-/** Associate the current visitor with a stable id across active providers. */
 export function identify(id: string, traits?: AnalyticsProps): void {
   alwaysOn.identify?.(id, traits);
   if (consentActive) {
@@ -85,7 +58,6 @@ export function identify(id: string, traits?: AnalyticsProps): void {
   }
 }
 
-/** Record an explicit pageview (for SPA route changes). */
 export function pageView(url?: string): void {
   alwaysOn.pageView?.(url);
   if (consentActive) {
@@ -93,7 +65,6 @@ export function pageView(url?: string): void {
   }
 }
 
-/** Clear identity/session state across active providers. */
 export function resetAnalytics(): void {
   alwaysOn.reset?.();
   consentGated.reset?.();

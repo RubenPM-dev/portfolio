@@ -4,15 +4,9 @@ import type { AnalyticsEventName, AnalyticsProps, AnalyticsProvider } from "../t
 
 export interface MixpanelOptions {
   token: string;
-  /** Optional API host override, e.g. "https://api-eu.mixpanel.com" for EU residency. */
   apiHost?: string;
 }
 
-/**
- * Mixpanel adapter. The SDK is dynamically imported inside `init`
- * so it is only shipped when a token is configured. Pageviews are auto-tracked
- * via `track_pageview`.
- */
 export function createMixpanelProvider({ token, apiHost }: MixpanelOptions): AnalyticsProvider {
   let client: Mixpanel | null = null;
 
@@ -24,7 +18,6 @@ export function createMixpanelProvider({ token, apiHost }: MixpanelOptions): Ana
       mixpanel.init(token, {
         track_pageview: true,
         persistence: "localStorage",
-        // Mixpanel skill: enable console debug logging outside production.
         debug: process.env.NODE_ENV !== "production",
         ...(apiHost ? { api_host: apiHost } : {}),
       });

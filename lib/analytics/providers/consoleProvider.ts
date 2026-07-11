@@ -1,10 +1,5 @@
 import type { AnalyticsEventName, AnalyticsProps, AnalyticsProvider } from "../types";
 
-/**
- * Development adapter that logs events to the browser console instead of
- * sending them anywhere. Enabled with NEXT_PUBLIC_ANALYTICS_DEBUG=true so you
- * can confirm instrumentation fires without wiring a real provider.
- */
 export function createConsoleProvider(): AnalyticsProvider {
   return {
     name: "console",
